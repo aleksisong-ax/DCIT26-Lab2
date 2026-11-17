@@ -1,108 +1,133 @@
 import { useMemo, useState } from 'react';
 import Icon from '../components/Icon.jsx';
 import CourseCard from '../components/CourseCard.jsx';
-import { courses } from '../data.js';
+import ScheduleGrid from '../components/ScheduleGrid.jsx';
+import { courses, defaultEnrolledCodes, MAX_UNITS, portalStudent, referenceSources, scheduleCatalog } from '../data.js';
 
-const departments = ['All departments', ...new Set(courses.map((course) => course.department))];
+const TABS = [
+  { id: 'schedule', label: 'Class Schedule' },
+  { id: 'enrollment', label: 'Enrollment & Add/Drop' },
+  { id: 'catalog', label: 'Subject-Code Catalog' },
+];
 
+// Courses page = class schedules + enrollment/registration + the CEIT code catalog.
 export default function Courses() {
+  const [tab, setTab] = useState('schedule');
+  const [enrolledCodes, setEnrolledCodes] = useState(defaultEnrolledCodes);
+  const [requests, setRequests] = useState([]);
   const [query, setQuery] = useState('');
-  const [department, setDepartment] = useState('All departments');
+  const [notice, setNotice] = useState('');
 
-  const filteredCourses = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    return courses.filter((course) => {
-      const matchesDepartment = department === 'All departments' || course.department === department;
-      const searchText = [course.code, course.title, course.department, course.instructor, ...course.topics]
-        .join(' ')
-        .toLowerCase();
-      return matchesDepartment && (!normalizedQuery || searchText.includes(normalizedQuery));
-    });
-  }, [query, department]);
+  const enrolledSubjects = useMemo(
+    () => scheduleCatalog.filter((course) => enrolledCodes.includes(course.code)),
+    [enrolledCodes],
+  );
+  const enrolledUnits = enrolledSubjects.reduce((sum, course) => sum + course.units, 0);
+  const available = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return scheduleCatalog.filter((course) => !enrolledCodes.includes(course.code))
+      .filter((course) => !q || `${course.code} ${course.title} ${course.instructor}`.toLowerCase().includes(q));
+  }, [enrolledCodes, query]);
+  const referenceList = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return courses.filter((course) => !q || `${course.code} ${course.title} ${course.department}`.toLowerCase().includes(q));
+  }, [query]);
 
-  const clearFilters = () => {
-    setQuery('');
-    setDepartment('All departments');
+  const addSubject = (course) => {
+    if (enrolledUnits + course.units > MAX_UNITS) { setNotice(`Cannot add ${course.code}: that would exceed the ${MAX_UNITS}-unit limit.`); return; }
+    setEnrolledCodes((codes) => [...codes, course.code]);
+    setRequests((list) => [{ type: 'Add', course, status: 'Approved — subject added' }, ...list]);
+    setNotice(`${course.code} ${course.title} added. You now have ${enrolledUnits + course.units} units.`);
+  };
+  const dropSubject = (course) => {
+    setEnrolledCodes((codes) => codes.filter((code) => code !== course.code));
+    setRequests((list) => [{ type: 'Drop', course, status: 'Pending adviser approval' }, ...list]);
+    setNotice(`Drop request for ${course.code} filed. Status: pending adviser approval.`);
   };
 
   return (
-    <div className="page-wrap">
-      <section className="page-hero container courses-page-hero">
-        <div className="page-hero-copy">
-          <p className="eyebrow"><span className="eyebrow-line" /> THE COURSE CATALOG</p>
-          <h1>Follow what<br /><span>makes you curious.</span></h1>
-          <p className="page-intro">From first lines of code to big-picture ideas, find a course that gives your curiosity somewhere to go.</p>
-        </div>
-        <div className="page-hero-aside courses-aside" aria-hidden="true">
-          <div className="course-art-paper paper-back" />
-          <div className="course-art-paper paper-front">
-            <span className="paper-label">A NOTE TO SELF</span>
-            <span className="paper-scribble">Keep<br />wondering<span>.</span></span>
-            <span className="paper-lines"><i /><i /><i /></span>
-          </div>
-          <span className="course-art-sticker"><Icon name="sparkles" size={21} /></span>
-          <span className="course-art-caption">Ideas worth<br />following</span>
-        </div>
-      </section>
+    <div className="page">
+      <header className="container page-head">
+        <p className="kicker">SIS / schedules, enrollment & catalog</p>
+        <h1>Class schedules & enrollment</h1>
+        <p className="page-standfirst">Check your enrolled subjects, rooms, and instructors; add or drop subjects online; and browse the CEIT subject-code reference. {portalStudent.name} · {portalStudent.section}.</p>
+      </header>
 
-      <section className="container catalog-section">
-        <div className="catalog-heading">
-          <div>
-            <p className="eyebrow">LEARNING, YOUR WAY</p>
-            <h2>The right next step is out there.</h2>
-          </div>
-          <p>Explore our sample catalog and open any course card to see what you might learn.</p>
+      <section className="container">
+        <div className="sis-tabs sis-tabs-large" role="tablist" aria-label="Course services">
+          {TABS.map((item) => (
+            <button key={item.id} type="button" role="tab" aria-selected={tab === item.id} className={tab === item.id ? 'is-selected' : ''} onClick={() => setTab(item.id)}>{item.label}</button>
+          ))}
         </div>
 
-        <div className="catalog-controls">
-          <label className="search-field catalog-search">
-            <Icon name="search" size={19} />
-            <span className="visually-hidden">Search courses</span>
-            <input
-              type="search"
-              placeholder="Search courses, codes, or topics..."
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-            {query && <button className="clear-search" type="button" onClick={() => setQuery('')} aria-label="Clear search"><Icon name="close" size={16} /></button>}
-          </label>
-          <div className="department-filters" role="group" aria-label="Filter courses by department">
-            {departments.map((item) => (
-              <button
-                type="button"
-                key={item}
-                className={`filter-chip${department === item ? ' is-selected' : ''}`}
-                aria-pressed={department === item}
-                onClick={() => setDepartment(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
+        {notice && <p className="sis-notice" role="status">{notice}</p>}
 
-        <div className="results-line" aria-live="polite">
-          <span><strong>{filteredCourses.length}</strong> {filteredCourses.length === 1 ? 'course' : 'courses'} to explore</span>
-          {(query || department !== 'All departments') && <button className="text-button" type="button" onClick={clearFilters}>Clear filters</button>}
-        </div>
-
-        {filteredCourses.length > 0 ? (
-          <div className="course-grid">
-            {filteredCourses.map((course) => <CourseCard key={course.code} course={course} />)}
-          </div>
-        ) : (
-          <div className="empty-state">
-            <span className="empty-state-icon"><Icon name="book" size={23} /></span>
-            <h3>No courses match that search.</h3>
-            <p>Try another title, topic, or department to keep exploring.</p>
-            <button className="button button-primary" type="button" onClick={clearFilters}>Show all courses <Icon name="arrowRight" size={16} /></button>
-          </div>
+        {tab === 'schedule' && (
+          <>
+            <div className="sis-progress-row"><span><strong>{enrolledUnits}</strong> of {MAX_UNITS} units · {enrolledSubjects.length} subjects</span><span>{MAX_UNITS - enrolledUnits} units remaining</span></div>
+            <div className="sis-progress"><i style={{ width: `${Math.min(100, (enrolledUnits / MAX_UNITS) * 100)}%` }} /></div>
+            <ScheduleGrid subjects={enrolledSubjects} />
+            <div className="sis-table-wrap" style={{ marginTop: 18 }}>
+              <table className="sis-table">
+                <thead><tr><th>Code</th><th>Subject</th><th>Days</th><th>Time</th><th>Room</th><th>Instructor</th></tr></thead>
+                <tbody>{enrolledSubjects.map((course) => (<tr key={course.code}><td className="sis-code">{course.code}</td><td>{course.title}</td><td>{course.days.join(' / ')}</td><td>{course.time}</td><td>{course.room}</td><td>{course.instructor}</td></tr>))}</tbody>
+              </table>
+            </div>
+          </>
         )}
-      </section>
 
-      <section className="container catalog-note">
-        <div className="catalog-note-icon"><Icon name="calendar" size={20} /></div>
-        <div><strong>A note about this catalog</strong><p>These courses are fictional examples for a class project. Check with your school for current offerings and registration details.</p></div>
+        {tab === 'enrollment' && (
+          <>
+            <ol className="sis-steps">
+              <li className="done">Advising</li><li className="now">Select subjects</li><li>Assessment</li><li>Payment</li><li>Enrolled</li>
+            </ol>
+            <div className="sis-progress-row"><span><strong>{enrolledUnits}</strong> of {MAX_UNITS} maximum units selected</span><span>Registration open until Aug 15, 2026</span></div>
+            <div className="sis-progress"><i style={{ width: `${Math.min(100, (enrolledUnits / MAX_UNITS) * 100)}%` }} /></div>
+
+            <h2 className="sis-subhead">Currently enrolled ({enrolledSubjects.length})</h2>
+            {enrolledSubjects.length ? (
+              <div className="catalog">{enrolledSubjects.map((course) => (<CourseCard key={course.code} course={course} enrolled actionLabel="Drop subject" onAction={dropSubject} />))}</div>
+            ) : <div className="empty"><p>No subjects enrolled yet. Add subjects below to begin registration.</p></div>}
+
+            <h2 className="sis-subhead">Add subjects</h2>
+            <div className="toolbar">
+              <label className="search-field">
+                <Icon name="search" size={16} /><span className="visually-hidden">Search available subjects</span>
+                <input type="search" placeholder="Search code, title, or instructor" value={query} onChange={(event) => setQuery(event.target.value)} />
+                {query && <button className="clear-search" type="button" onClick={() => setQuery('')} aria-label="Clear search"><Icon name="close" size={14} /></button>}
+              </label>
+              <p className="results" aria-live="polite">{available.length} available</p>
+            </div>
+            {available.length ? (
+              <div className="catalog">{available.map((course) => (<CourseCard key={course.code} course={course} actionLabel={enrolledUnits + course.units > MAX_UNITS ? 'Unit limit reached' : 'Add subject'} actionDisabled={enrolledUnits + course.units > MAX_UNITS} onAction={addSubject} />))}</div>
+            ) : <div className="empty"><p>No available subjects match “{query}”.</p></div>}
+
+            {requests.length > 0 && (
+              <article className="sis-panel" style={{ marginTop: 22 }}>
+                <p className="kicker">Filed requests</p><h2>Add / drop log</h2>
+                <ul className="sis-checklist">{requests.map((request, index) => (<li key={`${request.course.code}-${index}`} className={request.type === 'Add' ? 'done' : ''}><strong>{request.type}</strong> — {request.course.code} {request.course.title} · {request.status}</li>))}</ul>
+              </article>
+            )}
+          </>
+        )}
+
+        {tab === 'catalog' && (
+          <>
+            <p className="page-standfirst" style={{ marginBottom: 16 }}>{courses.length} CEIT subject-code entries transcribed from the supplied references — common university subjects and selected departmental examples. Not a complete curriculum.</p>
+            {referenceList.length ? (
+              <div className="catalog">{referenceList.map((course) => <CourseCard key={course.code} course={course} />)}</div>
+            ) : <div className="empty"><p>No subject codes match “{query}”.</p></div>}
+            <section className="source-list-section">
+              <p className="kicker">Source references</p>
+              <h2>Check the current curriculum before relying on a code.</h2>
+              <ul className="source-list">
+                {referenceSources.map((source) => (
+                  <li key={source.url}><span><strong>{source.label}</strong><small>{source.note}</small></span><a href={source.url} target="_blank" rel="noreferrer">Open source <Icon name="arrowUpRight" size={13} /></a></li>
+                ))}
+              </ul>
+            </section>
+          </>
+        )}
       </section>
     </div>
   );

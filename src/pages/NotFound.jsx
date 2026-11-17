@@ -3,12 +3,11 @@ import Icon from '../components/Icon.jsx';
 
 export default function NotFound() {
   return (
-    <section className="not-found container">
-      <span className="not-found-orbit"><Icon name="compass" size={43} strokeWidth={1.4} /></span>
-      <p className="eyebrow">A SMALL DETOUR</p>
-      <h1>Looks like this page<br /><span>is still finding its way.</span></h1>
-      <p>That address doesn’t lead anywhere in the Northstar portal. Let’s get you back on track.</p>
-      <Link className="button button-primary" to="/">Back to the home page <Icon name="arrowRight" size={17} /></Link>
+    <section className="container page-head not-found">
+      <p className="kicker">Error 404</p>
+      <h1>No page at this address.</h1>
+      <p className="page-standfirst">The portal has four pages: Home, Students, Courses, and About. Check the address or start from the front page.</p>
+      <Link className="button" to="/">Front page <Icon name="arrowRight" size={14} /></Link>
     </section>
   );
 }

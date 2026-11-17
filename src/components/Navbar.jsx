@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import Icon from './Icon.jsx';
+import { term } from '../data.js';
 
 const links = [
   { label: 'Home', to: '/', end: true },
@@ -13,19 +14,20 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
+  useEffect(() => setMenuOpen(false), [location.pathname]);
 
   return (
     <header className="site-header">
+      <div className="utility-band">
+        <div className="container utility-inner">
+          <span>ACADEMIC SERVICES</span>
+          <span>DEMO PORTAL · STUDENT PROFILES ARE FICTIONAL</span>
+        </div>
+      </div>
       <div className="container nav-shell">
-        <Link className="brand" to="/" aria-label="Northstar student portal home">
-          <span className="brand-mark"><Icon name="sparkles" size={20} /></span>
-          <span className="brand-name-wrap">
-            <span className="brand-name">northstar</span>
-            <span className="brand-caption">STUDENT PORTAL</span>
-          </span>
+        <Link className="masthead" to="/" aria-label="Student Information Portal home">
+          <span className="masthead-title">Student Information Portal</span>
+          <span className="masthead-term"><span>SIS · GRADES / SCHEDULE / ENROLLMENT</span><i aria-hidden="true">/</i>{term.label}</span>
         </Link>
 
         <button
@@ -36,29 +38,16 @@ export default function Navbar() {
           aria-controls="primary-navigation"
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <Icon name={menuOpen ? 'close' : 'menu'} size={21} />
+          <Icon name={menuOpen ? 'close' : 'menu'} size={18} />
         </button>
 
-        <nav
-          id="primary-navigation"
-          className={`nav-links${menuOpen ? ' is-open' : ''}`}
-          aria-label="Main navigation"
-        >
-          <div className="nav-link-list">
-            {links.map(({ label, to, end }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={end}
-                className={({ isActive }) => `nav-link${isActive ? ' is-active' : ''}`}
-              >
-                {label}
-              </NavLink>
-            ))}
-          </div>
-          <Link className="nav-cta" to="/students">
-            Find your people <Icon name="arrowRight" size={16} />
-          </Link>
+        <nav id="primary-navigation" className={`nav-links${menuOpen ? ' is-open' : ''}`} aria-label="Main navigation">
+          {links.map(({ label, to, end }, index) => (
+            <NavLink key={to} to={to} end={end} className={({ isActive }) => `nav-link${isActive ? ' is-active' : ''}`}>
+              <span className="nav-index">{String(index + 1).padStart(2, '0')}</span>
+              {label}
+            </NavLink>
+          ))}
         </nav>
       </div>
     </header>

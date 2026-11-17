@@ -1,16 +1,17 @@
-# Northstar Student Information Portal
+# Student Information Portal (SIS)
 
-A responsive student information portal built with React, reusable JSX components, and React Router. The sample records are fictional and are included for classroom demonstration only.
+A centralized, web-based **Student Information Portal** where students can view and manage their academic records online. Built with React, reusable JSX components, and React Router. All student profiles, grades, and schedules are fictional demo data.
 
-## Features
+**Signed-in demo student:** Mira Santos · 2023-10481 · BS Computer Science · BSCS 3-2
 
-- Client-side routes for **Home**, **Students**, **Courses**, and **About**.
-- Reusable `Navbar`, `StudentCard`, and `CourseCard` components.
-- Expandable student profiles and course details.
-- Live student search and year filtering; course search and department filtering.
-- Responsive layouts, semantic page structure, accessible labels, and a mobile navigation menu.
-- A plain, semantic HTML-only copy at [`public/portal-html.html`](public/portal-html.html), served at `/portal-html.html`.
-- Not-found route for unknown URLs.
+## Key features
+
+- **Grades & Academic Records** — midterm and final grades per semester, automatic GWA computation, transcript-style summary, and evaluation remarks (PH 1.00–5.00 scale).
+- **Class Schedules** — weekly timetable and subject table with days, time, room assignments, and instructor details.
+- **Enrollment & Registration** — online subject selection with a live 24-unit counter, 5-step registration status, and add/drop requests with an adviser-approval log.
+- **Account & Profile Management** — editable personal information, password change with strength meter, student ID photo upload, and a draw-your-own e-signature pad.
+- Student directory with live search and year filtering; CEIT subject-code catalog and degree-program reference with source links.
+- Responsive layout, accessible labels, mobile navigation, and a not-found route. No image assets are used (icons are inline SVG, avatars are initials).
 
 ## Run locally
 
@@ -19,7 +20,7 @@ npm install
 npm run dev
 ```
 
-Vite will print a local URL. To verify the production build:
+To verify the production build:
 
 ```bash
 npm run build
@@ -30,20 +31,22 @@ npm run preview
 
 | URL | Page |
 | --- | --- |
-| `/` | Home |
-| `/students` | Searchable student directory |
-| `/courses` | Filterable course catalog |
-| `/about` | About Northstar |
-| `/portal-html.html` | Static HTML-only demonstration |
+| `/` | Dashboard — SIS home for the signed-in student (grades, schedule, enrollment status, announcements) |
+| `/students` | Student directory + My Profile & Account management |
+| `/courses` | Class Schedule · Enrollment & Add/Drop · Subject-Code Catalog |
+| `/about` | About the SIS, rubric compliance, CEIT degree programs & sources |
+| `/portal-html.html` | Static HTML-only version (no React, no CSS, no JavaScript) |
 
 ## Project structure
 
 ```text
 src/
 ├── components/
-│   ├── CourseCard.jsx
+│   ├── CourseCard.jsx     # reusable subject / offering card (add-drop aware)
+│   ├── GradeTable.jsx     # reusable grades + GWA table
 │   ├── Icon.jsx
 │   ├── Navbar.jsx
+│   ├── ScheduleGrid.jsx   # reusable weekly timetable
 │   ├── SectionHeading.jsx
 │   └── StudentCard.jsx
 ├── pages/
@@ -52,28 +55,30 @@ src/
 │   ├── Home.jsx
 │   ├── NotFound.jsx
 │   └── Students.jsx
-├── data.js
+├── data.js                # fictional students, grades, schedule catalog, CEIT reference
 ├── App.jsx
 └── main.jsx
+public/
+└── portal-html.html       # HTML-only version, maintained in both branches
 ```
 
-## Git branches and submission
+## Git: identity, branches, and GitHub submission
 
-This project is prepared with two local branches:
+This project is a local Git repository with two branches:
 
-- `no-style` — the routed React portal and reusable cards before the custom stylesheet is added.
-- `main` — the completed styled portal, with responsive CSS and interactive page controls.
+- `main` — the completed, styled SIS portal (this branch).
+- `no-style` — the same portal content and routing **without** the stylesheet (`src/styles.css` is not included there).
 
-The standalone HTML-only file is kept in both branches. Review history with `git log --oneline --decorate --all` and switch branches with `git switch no-style` or `git switch main`.
+The HTML-only version (`public/portal-html.html`) is maintained in both branches. Review history with `git log --oneline --decorate --all`.
 
-Git identity was not supplied, so this workspace uses a clearly marked placeholder identity. Before submitting, set your own local author details:
+**Before submitting, set YOUR Git identity** (the workspace used a placeholder):
 
 ```bash
-git config user.name "Your Name"
+git config user.name "Your Full Name"
 git config user.email "you@example.com"
 ```
 
-To connect the repository to your own GitHub repository and push both branches, create an empty repository on GitHub, then run:
+**Connect to GitHub and push both branches** — create an empty repository on GitHub first, then:
 
 ```bash
 git remote add origin https://github.com/YOUR-USERNAME/student-information-portal.git
@@ -81,4 +86,4 @@ git push -u origin main
 git push -u origin no-style
 ```
 
-Replace the sample URL with your actual repository URL. No remote or GitHub account was provided, so this workspace is not pushed to GitHub.
+Replace the sample URL with your actual repository URL, then submit that repository link as the final output. No GitHub account or remote was provided in this workspace, so the push must be done with your own account.

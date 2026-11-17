@@ -1,133 +1,88 @@
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../components/Icon.jsx';
-import StudentCard from '../components/StudentCard.jsx';
-import CourseCard from '../components/CourseCard.jsx';
+import GradeTable from '../components/GradeTable.jsx';
+import ScheduleGrid from '../components/ScheduleGrid.jsx';
 import SectionHeading from '../components/SectionHeading.jsx';
-import { courses, students } from '../data.js';
+import { announcements, defaultEnrolledCodes, gradeBook, gwaOf, MAX_UNITS, portalStudent, scheduleCatalog, term } from '../data.js';
 
-const programCount = new Set(students.map((student) => student.program)).size;
-const yearCount = new Set(students.map((student) => student.year)).size;
+const enrolledSubjects = scheduleCatalog.filter((course) => defaultEnrolledCodes.includes(course.code));
+const enrolledUnits = enrolledSubjects.reduce((sum, course) => sum + course.units, 0);
+const fmt = (value) => Number(value).toFixed(2);
 
+// Home = the SIS dashboard for the signed-in student.
 export default function Home() {
+  const [semIndex, setSemIndex] = useState(0);
+  const rows = gradeBook[semIndex].rows;
+  const gwa = useMemo(() => gwaOf(rows), [rows]);
+  const progress = Math.round((portalStudent.completedUnits / portalStudent.curriculumUnits) * 100);
+  const today = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date().getDay()];
+  const todaysClasses = enrolledSubjects.filter((course) => course.days.includes(today));
+
   return (
     <>
-      <section className="hero-section">
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <span className="eyebrow-pill"><Icon name="sparkles" size={15} /> A BRIGHTER WAY TO FIND YOUR WAY</span>
-            <h1>Your campus,<br /><span>all in one place.</span></h1>
-            <p className="hero-description">
-              Meet the people, discover the courses, and find your next spark. Welcome to a more connected campus.
-            </p>
-            <div className="hero-actions">
-              <Link className="button button-primary" to="/students">Explore the community <Icon name="arrowRight" size={17} /></Link>
-              <Link className="button button-quiet" to="/courses">Browse courses <Icon name="arrowUpRight" size={16} /></Link>
-            </div>
-            <div className="hero-social-proof">
-              <div className="mini-avatar-stack" aria-hidden="true">
-                {students.slice(0, 4).map((student) => (
-                  <span className={`mini-avatar mini-${student.accent}`} key={student.id}>{student.initials}</span>
-                ))}
-              </div>
-              <p><strong>A campus full of possibility.</strong><br />Start by finding your people.</p>
-            </div>
+      <section className="container sis-hero">
+        <div>
+          <p className="kicker">Student Information Portal · {term.label}</p>
+          <h1>Welcome back, {portalStudent.name.split(' ')[0]}.</h1>
+          <p className="front-standfirst">A centralized, web-based portal where you can view and manage your academic records online — grades, class schedules, enrollment, and your student account in one place.</p>
+          <div className="front-actions">
+            <a className="button" href="#grades">View my grades <Icon name="arrowRight" size={14} /></a>
+            <Link className="link-plain" to="/courses">Manage enrollment <Icon name="arrowUpRight" size={13} /></Link>
           </div>
-
-          <div className="hero-art" aria-label="A sample student portal dashboard card">
-            <div className="hero-art-orbit orbit-one" />
-            <div className="hero-art-orbit orbit-two" />
-            <div className="hero-spark spark-one"><Icon name="sparkles" size={21} /></div>
-            <div className="hero-spark spark-two"><Icon name="sparkles" size={15} /></div>
-            <div className="hero-dashboard-card">
-              <div className="dashboard-topline">
-                <span className="dashboard-dot" />
-                <span>YOUR CAMPUS SNAPSHOT</span>
-                <Icon name="arrowUpRight" size={17} />
-              </div>
-              <p className="dashboard-kicker">A good place to begin</p>
-              <h2>Find your<br /><span>next thing.</span></h2>
-              <div className="dashboard-rule" />
-              <div className="dashboard-links">
-                <span className="dashboard-link-icon lavender-icon"><Icon name="users" size={17} /></span>
-                <span><strong>People who get it</strong><small>Make campus feel smaller</small></span>
-                <Icon name="arrowRight" size={16} className="dashboard-arrow" />
-              </div>
-              <div className="dashboard-links">
-                <span className="dashboard-link-icon peach-icon"><Icon name="book" size={17} /></span>
-                <span><strong>Ideas to explore</strong><small>Find a course to love</small></span>
-                <Icon name="arrowRight" size={16} className="dashboard-arrow" />
-              </div>
-            </div>
-            <div className="floating-note note-courses">
-              <span className="note-icon"><Icon name="layers" size={17} /></span>
-              <span><strong>{String(courses.length).padStart(2, '0')} courses</strong><small>to explore</small></span>
-            </div>
-            <div className="floating-note note-community">
-              <span className="community-check"><Icon name="check" size={14} /></span>
-              <span><strong>Find your community</strong><small>One hello at a time</small></span>
-            </div>
-          </div>
+          <p className="portal-disclosure"><strong>DEMO ACCOUNT</strong><span>{portalStudent.studentNo} · {portalStudent.program} · {portalStudent.section}. Names, grades, and schedules are fictional sample data.</span></p>
         </div>
-        <div className="hero-bottom-shape" />
+        <aside className="sis-adviser-card" aria-label="Student summary">
+          <span>ACADEMIC ADVISER</span>
+          <strong>{portalStudent.adviser}</strong>
+          <dl>
+            <div><dt>Curriculum progress</dt><dd>{portalStudent.completedUnits}/{portalStudent.curriculumUnits} units</dd></div>
+            <div><dt>Enrolled this term</dt><dd>{enrolledUnits} units · {enrolledSubjects.length} subjects</dd></div>
+            <div><dt>Registration</dt><dd>Enrolled</dd></div>
+            <div><dt>Standing</dt><dd>{portalStudent.standing}</dd></div>
+          </dl>
+        </aside>
       </section>
 
-      <section className="container stats-row" aria-label="Portal overview">
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-lilac"><Icon name="users" size={19} /></span>
-          <span className="stat-copy"><strong>{String(students.length).padStart(2, '0')}</strong><small>student stories</small></span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-peach"><Icon name="book" size={19} /></span>
-          <span className="stat-copy"><strong>{String(courses.length).padStart(2, '0')}</strong><small>courses to explore</small></span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-mint"><Icon name="graduation" size={19} /></span>
-          <span className="stat-copy"><strong>{String(programCount).padStart(2, '0')}</strong><small>degree programs</small></span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-sky"><Icon name="compass" size={19} /></span>
-          <span className="stat-copy"><strong>{String(yearCount).padStart(2, '0')}</strong><small>years represented</small></span>
-        </div>
+      <section className="container sis-stats" aria-label="Academic summary">
+        <article className="sis-stat"><span>Current GWA</span><strong>{fmt(gwa)}</strong><small>{gwa <= 1.75 ? 'On track for honors' : 'Good standing'} · 1.00 scale</small></article>
+        <article className="sis-stat"><span>Units enrolled</span><strong>{enrolledUnits} / {MAX_UNITS}</strong><small>{enrolledSubjects.length} subjects this semester</small></article>
+        <article className="sis-stat"><span>Classes today</span><strong>{todaysClasses.length}</strong><small>{todaysClasses[0] ? `${todaysClasses[0].time} · ${todaysClasses[0].room}` : 'No classes today'}</small></article>
+        <article className="sis-stat"><span>Degree progress</span><strong>{progress}%</strong><small>{portalStudent.completedUnits} of {portalStudent.curriculumUnits} units earned</small></article>
       </section>
 
-      <section className="section-block container home-directory-section">
-        <SectionHeading
-          eyebrow="THE PEOPLE MAKE THE PLACE"
-          title="A community worth knowing."
-          description="A few friendly faces to get you started. Every profile is a doorway to a new conversation."
-          action={<Link className="section-link" to="/students">Meet all students <Icon name="arrowRight" size={16} /></Link>}
-        />
-        <div className="student-grid home-student-grid">
-          {students.slice(0, 3).map((student) => <StudentCard key={student.id} student={student} />)}
-        </div>
+      <section className="container section-block" id="grades">
+        <SectionHeading number="01" title="Grades & academic records" description="Midterm and final grades as posted by instructors. Switch semesters to view earlier evaluation results."
+          action={<div className="sis-tabs" role="tablist">{gradeBook.map((book, index) => (<button key={book.sem} type="button" className={index === semIndex ? 'is-selected' : ''} onClick={() => setSemIndex(index)}>{book.sem}</button>))}</div>} />
+        <GradeTable rows={rows} />
+        <p className="footnote">Semester GWA: <strong>{fmt(gwa)}</strong> · PH scale 1.00 (highest) to 5.00, passing at 3.00. Final rating is the rounded average of midterm and final grades. Demo grades only — see the Courses page for enrollment and the Students page for profile management.</p>
       </section>
 
-      <section className="section-block course-feature-section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="LEARN SOMETHING NEW"
-            title="Curiosity looks good on you."
-            description="Explore a small sample of the subjects and skills waiting to be discovered."
-            action={<Link className="section-link" to="/courses">See the course catalog <Icon name="arrowRight" size={16} /></Link>}
-          />
-          <div className="course-grid home-course-grid">
-            {courses.slice(0, 3).map((course) => <CourseCard key={course.code} course={course} />)}
-          </div>
-        </div>
+      <section className="container section-block">
+        <SectionHeading number="02" title="Class schedule" description={`Your weekly timetable with room assignments and instructors (${enrolledUnits} units).`}
+          action={<Link className="link-plain" to="/courses">Open schedule & enrollment <Icon name="arrowRight" size={13} /></Link>} />
+        <ScheduleGrid subjects={enrolledSubjects} />
       </section>
 
-      <section className="container invitation-section">
-        <div className="invitation-card">
-          <div className="invitation-decoration invitation-decoration-one" />
-          <div className="invitation-decoration invitation-decoration-two" />
-          <div className="invitation-content">
-            <span className="eyebrow-pill eyebrow-pill-light"><Icon name="compass" size={15} /> YOUR NEXT CHAPTER STARTS HERE</span>
-            <h2>There’s more to campus<br />than a class schedule.</h2>
-            <p>Get to know the Northstar portal and find your own way to belong.</p>
-            <Link className="button button-light" to="/about">Get to know us <Icon name="arrowRight" size={17} /></Link>
-          </div>
-          <div className="invitation-symbol" aria-hidden="true"><Icon name="sparkles" size={74} strokeWidth={1.2} /></div>
-        </div>
+      <section className="container sis-two-col section-block">
+        <article className="sis-panel">
+          <p className="kicker">Enrollment checklist</p>
+          <h2>Registration status</h2>
+          <ul className="sis-checklist">
+            <li className="done">Advising with {portalStudent.adviser}</li>
+            <li className="done">Subjects selected ({enrolledUnits} units)</li>
+            <li className="done">Assessment generated</li>
+            <li><strong>Payment validation</strong> — present your assessment slip at the cashier or pay online.</li>
+          </ul>
+          <Link className="button sis-btn-small" to="/courses">Continue enrollment</Link>
+        </article>
+        <article className="sis-panel">
+          <p className="kicker">Announcements</p>
+          <h2>From the registrar</h2>
+          {announcements.map((item) => (
+            <div key={item.title} className="sis-announce"><h3>{item.title}</h3><p>{item.body}</p><span>{item.when}</span></div>
+          ))}
+        </article>
       </section>
     </>
   );

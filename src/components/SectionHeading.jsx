@@ -1,8 +1,8 @@
-export default function SectionHeading({ eyebrow, title, description, action, align = 'left' }) {
+export default function SectionHeading({ number, title, description, action }) {
   return (
-    <div className={`section-heading section-heading--${align}`}>
+    <div className="section-heading">
       <div className="section-heading-copy">
-        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+        {number && <span className="section-number">{number}</span>}
         <h2>{title}</h2>
         {description && <p className="section-heading-description">{description}</p>}
       </div>
