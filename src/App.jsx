@@ -20,7 +20,7 @@ function Footer() {
       <div className="container footer-grid">
         <div>
           <p className="footer-title">Student Information Portal</p>
-          <p className="footer-note">Front-end class project. All student and course records are fictional and not connected to any school database.</p>
+          <p className="footer-note">A school-portal design exercise. No school branding, student database, or official service is represented here.</p>
         </div>
         <nav className="footer-nav" aria-label="Footer navigation">
           <Link to="/students">Students</Link>
@@ -29,8 +29,8 @@ function Footer() {
           <a href="/portal-html.html">HTML-only version</a>
         </nav>
         <div className="footer-meta">
-          <span>Records last updated {term.lastUpdated}</span>
           <span>{term.label}</span>
+          <span>FICTIONAL SAMPLE DATA · NOT AN OFFICIAL PORTAL</span>
         </div>
       </div>
     </footer>

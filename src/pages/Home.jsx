@@ -5,13 +5,11 @@ import CourseCard from '../components/CourseCard.jsx';
 import SectionHeading from '../components/SectionHeading.jsx';
 import { courses, students, term } from '../data.js';
 
-const programs = [...new Set(students.map((s) => s.program))];
-const departments = [...new Set(courses.map((c) => c.department))];
-const totalUnits = courses.reduce((sum, c) => sum + c.credits, 0);
-const fullSections = courses.filter((c) => {
-  const [taken, cap] = c.seats.split(' / ').map(Number);
-  return taken >= cap;
-}).length;
+const programs = [...new Set(students.map((student) => student.program))];
+const departments = [...new Set(courses.map((course) => course.department))];
+const formatDate = (date) => new Intl.DateTimeFormat('en-PH', {
+  day: 'numeric', month: 'short', year: 'numeric',
+}).format(new Date(`${date}T12:00:00`));
 
 const dates = [
   ['Enrollment opens', term.enrollmentOpens],
@@ -24,42 +22,57 @@ export default function Home() {
     <>
       <section className="container front">
         <div className="front-lead">
-          <p className="kicker">{term.label}</p>
-          <h1>Who is enrolled, what is offered, and where to find it.</h1>
+          <p className="kicker">STUDENT SERVICES / {term.short}</p>
+          <h1>People, programs, and course sections.</h1>
           <p className="front-standfirst">
-            A single index of this term’s student records and course sections. Open any row for the full record; search and filter on the Students and Courses pages.
+            Browse the student directory and course catalog for the sample academic term. Find a class, check a section’s details, or see who is studying alongside you.
           </p>
           <div className="front-actions">
-            <Link className="button" to="/students">Open student directory <Icon name="arrowRight" size={14} /></Link>
+            <Link className="button" to="/students">Student directory <Icon name="arrowRight" size={14} /></Link>
             <Link className="link-plain" to="/courses">Course catalog <Icon name="arrowUpRight" size={13} /></Link>
           </div>
+          <p className="portal-disclosure"><strong>DEMONSTRATION SITE</strong><span>Fictional records only. No sign-in, grades, payments, or official enrollment.</span></p>
         </div>
 
-        <aside className="front-index" aria-label="This term at a glance">
-          <h2 className="index-title">At a glance</h2>
-          <dl className="index-list">
-            <div><dt>Students on record</dt><dd>{students.length}</dd></div>
-            <div><dt>Programs</dt><dd>{programs.length}</dd></div>
-            <div><dt>Course sections</dt><dd>{courses.length}</dd></div>
-            <div><dt>Departments</dt><dd>{departments.length}</dd></div>
-            <div><dt>Units offered</dt><dd>{totalUnits}</dd></div>
-            <div><dt>Sections full</dt><dd className={fullSections ? 'is-flag' : ''}>{fullSections}</dd></div>
+        <figure className="front-photo">
+          <img src="/campus-courtyard.jpg" alt="Illustrative university courtyard with students walking between academic buildings" />
+          <figcaption>
+            <span className="photo-kicker">CAMPUS SCENE · ILLUSTRATIVE</span>
+            <span>A place to learn, meet, and get to class.</span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section className="container term-summary" aria-label="Sample term information">
+        <div className="term-summary-intro">
+          <p className="kicker">TERM BRIEF / SAMPLE DATA</p>
+          <h2>{term.label}</h2>
+          <p>A small index of the sample records in this demonstration.</p>
+        </div>
+        <div className="term-summary-body">
+          <dl className="term-stat-list">
+            <div><dt>Student profiles</dt><dd>{String(students.length).padStart(2, '0')}</dd></div>
+            <div><dt>Course sections</dt><dd>{String(courses.length).padStart(2, '0')}</dd></div>
+            <div><dt>Programs represented</dt><dd>{String(programs.length).padStart(2, '0')}</dd></div>
+            <div><dt>Departments represented</dt><dd>{String(departments.length).padStart(2, '0')}</dd></div>
           </dl>
-          <h2 className="index-title">Key dates</h2>
-          <dl className="index-list index-dates">
-            {dates.map(([label, date]) => (
-              <div key={label}><dt>{label}</dt><dd><time dateTime={date}>{date}</time></dd></div>
-            ))}
-          </dl>
-        </aside>
+          <div className="term-date-block">
+            <h3>Calendar dates <span>sample</span></h3>
+            <dl className="term-date-list">
+              {dates.map(([label, date]) => (
+                <div key={label}><dt>{label}</dt><dd><time dateTime={date}>{formatDate(date)}</time></dd></div>
+              ))}
+            </dl>
+          </div>
+        </div>
       </section>
 
       <section className="container section-block">
         <SectionHeading
           number="01"
-          title="Recently updated records"
-          description={`Three of ${students.length} students. Sorted by ID.`}
-          action={<Link className="link-plain" to="/students">All students <Icon name="arrowRight" size={13} /></Link>}
+          title="Student directory"
+          description={`Three sample profiles from ${students.length} fictional records.`}
+          action={<Link className="link-plain" to="/students">View all students <Icon name="arrowRight" size={13} /></Link>}
         />
         <div className="ledger">
           <div className="ledger-head" aria-hidden="true">
@@ -72,22 +85,19 @@ export default function Home() {
       <section className="container section-block">
         <SectionHeading
           number="02"
-          title="Sections closing soon"
-          description="Sections at or within three seats of capacity."
-          action={<Link className="link-plain" to="/courses">Full catalog <Icon name="arrowRight" size={13} /></Link>}
+          title="Course catalog"
+          description="Sample sections with fictional schedules, rooms, and seat counts."
+          action={<Link className="link-plain" to="/courses">View full catalog <Icon name="arrowRight" size={13} /></Link>}
         />
         <div className="catalog">
-          {courses
-            .filter((c) => { const [t, cap] = c.seats.split(' / ').map(Number); return cap - t <= 3; })
-            .slice(0, 3)
-            .map((course) => <CourseCard key={course.code} course={course} />)}
+          {courses.slice(0, 3).map((course) => <CourseCard key={course.code} course={course} />)}
         </div>
       </section>
 
       <section className="container notice">
-        <p className="kicker">Notice</p>
-        <p>This portal is a front-end demonstration built for a web development course. It uses sample records only. For official transcripts, enrollment, and grades, contact your registrar directly.</p>
-        <Link className="link-plain" to="/about">About this project <Icon name="arrowRight" size={13} /></Link>
+        <p className="kicker">For official information</p>
+        <p>This project is not connected to a school system. The names, dates, course sections, and seat counts are invented. For grades, enrollment, tuition, or transcripts, use your school’s official portal or contact its registrar.</p>
+        <Link className="link-plain" to="/about">About this demonstration <Icon name="arrowRight" size={13} /></Link>
       </section>
     </>
   );

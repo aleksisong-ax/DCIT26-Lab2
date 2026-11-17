@@ -17,9 +17,9 @@ export default function Students() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return students.filter((s) => {
-      const matchesYear = year === 'all' || String(s.year) === year;
-      const text = [s.name, s.program, s.yearLabel, s.id, s.adviser, s.campus, ...s.interests].join(' ').toLowerCase();
+    return students.filter((student) => {
+      const matchesYear = year === 'all' || String(student.year) === year;
+      const text = [student.name, student.program, student.yearLabel, student.id, student.adviser, student.campus, ...student.interests].join(' ').toLowerCase();
       return matchesYear && (!q || text.includes(q));
     });
   }, [query, year]);
@@ -30,9 +30,9 @@ export default function Students() {
   return (
     <div className="page">
       <header className="container page-head">
-        <p className="kicker">Directory</p>
+        <p className="kicker">Academic records / sample directory</p>
         <h1>Students</h1>
-        <p className="page-standfirst">{students.length} records on file for this term. Search by name, ID, program, adviser, or interest.</p>
+        <p className="page-standfirst">{students.length} fictional profiles in this sample directory. Search by name, ID, program, adviser, or interest.</p>
       </header>
 
       <section className="container">
@@ -46,7 +46,7 @@ export default function Students() {
           <label className="filter-select">
             <span className="filter-label">Year</span>
             <select value={year} onChange={(e) => setYear(e.target.value)}>
-              {yearOptions.map((o) => <option value={o.value} key={o.value}>{o.label}</option>)}
+              {yearOptions.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}
             </select>
             <Icon name="chevronDown" size={14} />
           </label>
@@ -61,7 +61,7 @@ export default function Students() {
             <div className="ledger-head" aria-hidden="true">
               <span>ID</span><span>Name</span><span>Program</span><span>Year</span><span>Standing</span><span />
             </div>
-            {filtered.map((s) => <StudentCard key={s.id} student={s} />)}
+            {filtered.map((student) => <StudentCard key={student.id} student={student} />)}
           </div>
         ) : (
           <div className="empty">
@@ -71,7 +71,7 @@ export default function Students() {
         )}
       </section>
 
-      <p className="container footnote">Names, IDs, and advisers are fictional sample data.</p>
+      <p className="container footnote">Names, IDs, advisers, contact details, and standing labels are fictional. No official student record is shown.</p>
     </div>
   );
 }

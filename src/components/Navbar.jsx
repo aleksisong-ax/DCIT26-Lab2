@@ -14,16 +14,20 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
+  useEffect(() => setMenuOpen(false), [location.pathname]);
 
   return (
     <header className="site-header">
+      <div className="utility-band">
+        <div className="container utility-inner">
+          <span>ACADEMIC SERVICES</span>
+          <span>DEMONSTRATION PORTAL · FICTIONAL SAMPLE RECORDS</span>
+        </div>
+      </div>
       <div className="container nav-shell">
-        <Link className="masthead" to="/">
+        <Link className="masthead" to="/" aria-label="Student Information Portal home">
           <span className="masthead-title">Student Information Portal</span>
-          <span className="masthead-term">{term.label}</span>
+          <span className="masthead-term"><span>ACADEMIC RECORDS</span><i aria-hidden="true">/</i>{term.label}</span>
         </Link>
 
         <button

@@ -9,6 +9,7 @@ A responsive student information portal built with React, reusable JSX component
 - Expandable student profiles and course details.
 - Live student search and year filtering; course search and department filtering.
 - Responsive layouts, semantic page structure, accessible labels, and a mobile navigation menu.
+- Unbranded school-inspired presentation: forest-green utility rail, warm paper, restrained brass details, and an original illustrative campus photograph.
 - A plain, semantic HTML-only copy at [`public/portal-html.html`](public/portal-html.html), served at `/portal-html.html`.
 - Not-found route for unknown URLs.
 
