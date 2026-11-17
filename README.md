@@ -1,6 +1,6 @@
 # Student Information Portal
 
-A responsive student information portal built with React, reusable JSX components, and React Router. The sample records are fictional and are included for classroom demonstration only.
+An unbranded CEIT student information portal built with React, reusable JSX components, and React Router. Student profiles are fictional; degree programs and subject-code examples are partial references transcribed from material supplied for the project and should be verified against current university sources.
 
 ## Features
 

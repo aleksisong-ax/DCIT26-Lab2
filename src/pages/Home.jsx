@@ -3,74 +3,68 @@ import Icon from '../components/Icon.jsx';
 import StudentCard from '../components/StudentCard.jsx';
 import CourseCard from '../components/CourseCard.jsx';
 import SectionHeading from '../components/SectionHeading.jsx';
-import { courses, students, term } from '../data.js';
+import { courses, degreeProgramGroups, students, subjectAreas, term } from '../data.js';
 
-const programs = [...new Set(students.map((student) => student.program))];
-const departments = [...new Set(courses.map((course) => course.department))];
-const formatDate = (date) => new Intl.DateTimeFormat('en-PH', {
-  day: 'numeric', month: 'short', year: 'numeric',
-}).format(new Date(`${date}T12:00:00`));
-
-const dates = [
-  ['Enrollment opens', term.enrollmentOpens],
-  ['Classes begin', term.classesBegin],
-  ['Add/drop ends', term.addDropEnds],
-];
+const degreeProgramCount = degreeProgramGroups.reduce((count, group) => count + group.programs.length, 0);
+const commonSubjects = courses.filter((course) => course.kind === 'Common university requirement');
+const majorSubjects = courses.filter((course) => course.kind === 'Program subject example');
+const featuredCodes = ['CvSU 101', 'DCIT 21', 'CENG 50'];
+const featuredCourses = featuredCodes.map((code) => courses.find((course) => course.code === code)).filter(Boolean);
 
 export default function Home() {
   return (
     <>
       <section className="container front">
         <div className="front-lead">
-          <p className="kicker">STUDENT SERVICES / {term.short}</p>
-          <h1>People, programs, and course sections.</h1>
+          <p className="kicker">{term.short} / DEGREE & SUBJECT REFERENCE</p>
+          <h1>People, programs, and subject codes.</h1>
           <p className="front-standfirst">
-            Browse the student directory and course catalog for the sample academic term. Find a class, check a section’s details, or see who is studying alongside you.
+            Find the CEIT degree-program list, common university subjects, and selected departmental code examples collected for this portal.
           </p>
           <div className="front-actions">
-            <Link className="button" to="/students">Student directory <Icon name="arrowRight" size={14} /></Link>
-            <Link className="link-plain" to="/courses">Course catalog <Icon name="arrowUpRight" size={13} /></Link>
+            <Link className="button" to="/about">View degree programs <Icon name="arrowRight" size={14} /></Link>
+            <Link className="link-plain" to="/courses">Browse subject codes <Icon name="arrowUpRight" size={13} /></Link>
           </div>
-          <p className="portal-disclosure"><strong>DEMONSTRATION SITE</strong><span>Fictional records only. No sign-in, grades, payments, or official enrollment.</span></p>
+          <p className="portal-disclosure"><strong>REFERENCE PROJECT</strong><span>Student profiles are fictional. Program and subject details are for reference; verify with current CvSU CEIT materials.</span></p>
         </div>
 
-        <aside className="front-term-panel" aria-label="Sample academic term shortcuts">
+        <aside className="front-term-panel" aria-label="CEIT reference shortcuts">
           <div className="front-panel-head">
             <span>ACADEMIC SERVICES</span>
-            <span>DEMO / 01</span>
+            <span>REFERENCE / 01</span>
           </div>
           <div className="front-panel-session">
-            <span className="front-panel-code">2S</span>
-            <span className="front-panel-year"><small>ACADEMIC YEAR</small><strong>2026–27</strong></span>
+            <span className="front-panel-code">CEIT</span>
+            <span className="front-panel-year"><small>INDEX</small><strong>Programs<br />& subject codes</strong></span>
           </div>
-          <p className="front-panel-title">Student services index</p>
-          <p className="front-panel-copy">A sample directory and catalog for the second semester.</p>
-          <nav className="front-panel-links" aria-label="Portal sections">
-            <Link to="/students"><span>01</span><span>Student directory</span><Icon name="arrowRight" size={15} /></Link>
-            <Link to="/courses"><span>02</span><span>Course catalog</span><Icon name="arrowRight" size={15} /></Link>
+          <p className="front-panel-title">College reference index</p>
+          <p className="front-panel-copy">Degree programs, shared requirements, and selected code examples.</p>
+          <nav className="front-panel-links" aria-label="Reference sections">
+            <Link to="/about"><span>01</span><span>Degree programs</span><Icon name="arrowRight" size={15} /></Link>
+            <Link to="/courses"><span>02</span><span>Subject-code catalog</span><Icon name="arrowRight" size={15} /></Link>
           </nav>
-          <p className="front-panel-note">FICTIONAL SAMPLE RECORDS · NO SIGN-IN</p>
+          <p className="front-panel-note">SOURCE-LINKED · NOT AN OFFICIAL CURRICULUM</p>
         </aside>
       </section>
 
-      <section className="container term-summary" aria-label="Sample term information">
+      <section className="container term-summary" aria-label="Reference index overview">
         <div className="term-summary-intro">
-          <p className="kicker">TERM BRIEF / SAMPLE DATA</p>
+          <p className="kicker">REFERENCE INDEX / {term.short}</p>
           <h2>{term.label}</h2>
-          <p>A small index of the sample records in this demonstration.</p>
+          <p>Student profiles are examples; curriculum entries are a partial reference list.</p>
         </div>
         <div className="term-summary-body">
           <dl className="term-stat-list">
-            <div><dt>Student profiles</dt><dd>{String(students.length).padStart(2, '0')}</dd></div>
-            <div><dt>Course sections</dt><dd>{String(courses.length).padStart(2, '0')}</dd></div>
-            <div><dt>Programs represented</dt><dd>{String(programs.length).padStart(2, '0')}</dd></div>
-            <div><dt>Departments represented</dt><dd>{String(departments.length).padStart(2, '0')}</dd></div>
+            <div><dt>Sample student profiles</dt><dd>{String(students.length).padStart(2, '0')}</dd></div>
+            <div><dt>Degree programs listed</dt><dd>{String(degreeProgramCount).padStart(2, '0')}</dd></div>
+            <div><dt>Common subject entries</dt><dd>{String(commonSubjects.length).padStart(2, '0')}</dd></div>
+            <div><dt>Departmental examples</dt><dd>{String(majorSubjects.length).padStart(2, '0')}</dd></div>
           </dl>
           <div className="term-date-block">
-            <h3>Calendar dates <span>sample</span></h3>
+            <h3>Code families <span>{subjectAreas.length} areas</span></h3>
             <dl className="term-date-list">
-              {dates.map(([label, date]) => (
-                <div key={label}><dt>{label}</dt><dd><time dateTime={date}>{formatDate(date)}</time></dd></div>
+              {subjectAreas.map((area) => (
+                <div key={area.department}><dt>{area.department}</dt><dd>{area.prefixes.join(' · ')}</dd></div>
               ))}
             </dl>
           </div>
@@ -81,7 +75,7 @@ export default function Home() {
         <SectionHeading
           number="01"
           title="Student directory"
-          description={`Three sample profiles from ${students.length} fictional records.`}
+          description={`Three fictional profiles from ${students.length} sample records.`}
           action={<Link className="link-plain" to="/students">View all students <Icon name="arrowRight" size={13} /></Link>}
         />
         <div className="ledger">
@@ -95,19 +89,19 @@ export default function Home() {
       <section className="container section-block">
         <SectionHeading
           number="02"
-          title="Course catalog"
-          description="Sample sections with fictional schedules, rooms, and seat counts."
-          action={<Link className="link-plain" to="/courses">View full catalog <Icon name="arrowRight" size={13} /></Link>}
+          title="Subject-code examples"
+          description="Selected entries from the supplied CEIT reference notes—not a term schedule."
+          action={<Link className="link-plain" to="/courses">Browse all codes <Icon name="arrowRight" size={13} /></Link>}
         />
         <div className="catalog">
-          {courses.slice(0, 3).map((course) => <CourseCard key={course.code} course={course} />)}
+          {featuredCourses.map((course) => <CourseCard key={course.code} course={course} />)}
         </div>
       </section>
 
       <section className="container notice">
         <p className="kicker">For official information</p>
-        <p>This project is not connected to a school system. The names, dates, course sections, and seat counts are invented. For grades, enrollment, tuition, or transcripts, use your school’s official portal or contact its registrar.</p>
-        <Link className="link-plain" to="/about">About this demonstration <Icon name="arrowRight" size={13} /></Link>
+        <p>This portal is not connected to Cavite State University. Student profiles are fictional; program and subject-code details are a partial reference and may be outdated. Confirm current offerings, units, prerequisites, and enrollment rules with the university or CEIT registrar.</p>
+        <Link className="link-plain" to="/about">Read the source notes <Icon name="arrowRight" size={13} /></Link>
       </section>
     </>
   );

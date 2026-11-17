@@ -20,7 +20,7 @@ function Footer() {
       <div className="container footer-grid">
         <div>
           <p className="footer-title">Student Information Portal</p>
-          <p className="footer-note">A school-portal design exercise. No school branding, student database, or official service is represented here.</p>
+          <p className="footer-note">Student profiles are fictional; curriculum entries are a partial reference and may be out of date. No login, enrollment, or official record service is provided.</p>
         </div>
         <nav className="footer-nav" aria-label="Footer navigation">
           <Link to="/students">Students</Link>

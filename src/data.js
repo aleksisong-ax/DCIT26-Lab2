@@ -1,12 +1,143 @@
-// Fictional sample records for the portal. Do not replace these with private student data.
+// Student profiles are fictional. CEIT programs and subject-code examples below
+// are transcribed from references supplied for this project; verify current details.
 export const term = {
-  label: 'Second Semester, AY 2026–2027',
-  short: '2S 2026–27',
-  enrollmentOpens: '2026-12-01',
-  classesBegin: '2027-01-11',
-  addDropEnds: '2027-01-22',
-  lastUpdated: '2026-11-17',
+  label: 'CEIT degree and subject reference',
+  short: 'CEIT',
 };
+
+export const degreeProgramGroups = [
+  {
+    id: 'engineering',
+    title: 'Engineering programs',
+    programs: [
+      { name: 'BS Agricultural and Biosystems Engineering' },
+      { name: 'BS Civil Engineering' },
+      { name: 'BS Computer Engineering' },
+      { name: 'BS Electrical Engineering' },
+      { name: 'BS Electronics Engineering' },
+      { name: 'BS Industrial Engineering' },
+    ],
+  },
+  {
+    id: 'computing-architecture',
+    title: 'Computing & Architecture programs',
+    programs: [
+      { name: 'BS Computer Science' },
+      { name: 'BS Information Technology' },
+      { name: 'BS Architecture' },
+    ],
+  },
+  {
+    id: 'technology',
+    title: 'Technology programs',
+    programs: [
+      {
+        name: 'BS Industrial Technology',
+        majors: ['Automotive Technology', 'Electrical Technology', 'Electronics Technology'],
+      },
+    ],
+  },
+];
+
+export const subjectAreas = [
+  {
+    department: 'University & General Education',
+    prefixes: ['CvSU', 'GNED', 'FITT', 'NSTP'],
+    kind: 'Common university requirement',
+  },
+  {
+    department: 'Information Technology & Computer Science',
+    prefixes: ['DCIT', 'ITEC', 'COSC'],
+    kind: 'Program subject example',
+  },
+  {
+    department: 'Civil & General Engineering',
+    prefixes: ['CENG', 'ENGS', 'MATH'],
+    kind: 'Program subject example',
+  },
+  {
+    department: 'Computer & Electronics Engineering',
+    prefixes: ['CPEN', 'ECEN', 'EENG'],
+    kind: 'Program subject example',
+  },
+];
+
+const commonDepartment = subjectAreas[0].department;
+const commonKind = subjectAreas[0].kind;
+const commonSubjects = [
+  { code: 'CvSU 101', title: 'Institutional Orientation', units: 1 },
+  { code: 'GNED 01', title: 'Art Appreciation', units: 3 },
+  { code: 'GNED 02', title: 'Ethics', units: 3 },
+  { code: 'GNED 03', title: 'Mathematics in the Modern World', units: 3 },
+  { code: 'GNED 04', title: 'Mga Babasahin Hinggil sa Kasaysayan ng Pilipinas', units: 3 },
+  { code: 'GNED 05', title: 'Purposive Communication', units: 3 },
+  { code: 'GNED 07', title: 'The Contemporary World', units: 3 },
+  { code: 'GNED 10', title: 'Gender and Society', units: 3 },
+  { code: 'GNED 11', title: 'Kontekstwalisadong Komunikasyon sa Filipino', units: 3 },
+  {
+    code: 'FITT 1–4',
+    title: 'Movement Enhancement / Physical Activities Toward Health and Fitness',
+    units: 2,
+    unitNote: 'The supplied notes show 2 units for the grouped FITT sequence. Confirm how units are allocated across FITT 1–4.',
+  },
+  {
+    code: 'NSTP 1–2',
+    title: 'National Service Training Program 1 & 2',
+    units: 3,
+    unitNote: 'The supplied notes show 3 units for the grouped NSTP sequence. Confirm how units are allocated across NSTP 1–2.',
+  },
+].map((subject) => ({ ...subject, department: commonDepartment, kind: commonKind }));
+
+const majorSubjectRows = [
+  ['DCIT 21', 'Computer Programming 1', 'Information Technology & Computer Science'],
+  ['DCIT 22', 'Computer Programming 2', 'Information Technology & Computer Science'],
+  ['DCIT 23', 'Discrete Mathematics', 'Information Technology & Computer Science'],
+  ['DCIT 55', 'Operating Systems', 'Information Technology & Computer Science'],
+  ['ITEC 55', 'System Analysis and Design', 'Information Technology & Computer Science'],
+  ['ITEC 60', 'Multimedia Systems', 'Information Technology & Computer Science'],
+  ['ITEC 65', 'Advanced Database Management System', 'Information Technology & Computer Science'],
+  ['MATH 13', 'Differential Equations', 'Civil & General Engineering'],
+  ['ENGS 21', 'Statics of Rigid Bodies', 'Civil & General Engineering'],
+  ['CENG 50', 'Fundamentals of Surveying', 'Civil & General Engineering'],
+  ['CPEN 21', 'Programming Logic and Design', 'Computer & Electronics Engineering'],
+  ['CPEN 50', 'Computer Hardware Fundamentals', 'Computer & Electronics Engineering'],
+  ['CPEN 55', 'Data Structures and Algorithm Analysis', 'Computer & Electronics Engineering'],
+  ['ECEN 60', 'Electronics I', 'Computer & Electronics Engineering'],
+  ['EENG 60', 'Circuits I', 'Computer & Electronics Engineering'],
+];
+
+const majorSubjects = majorSubjectRows.map(([code, title, department]) => ({
+  code,
+  title,
+  department,
+  kind: 'Program subject example',
+  referenceNote: 'This code and title are an example from the supplied notes, not a complete curriculum or current class schedule. Confirm details with the department.',
+}));
+
+export const courses = [...commonSubjects, ...majorSubjects];
+
+export const referenceSources = [
+  {
+    label: 'CvSU CEIT Academic Programs (2018)',
+    url: 'https://cvsu.edu.ph/2018/01/13/ceit-academic-programs/',
+    note: 'Program list; the page is dated 2018.',
+  },
+  {
+    label: 'Cavite City campus schedule page',
+    url: 'https://cavitecity.cvsu.edu.ph/schedule/',
+    note: 'Common-subject reference supplied for this project.',
+  },
+  {
+    label: 'BSIT checklist on Studocu',
+    url: 'https://www.studocu.com/ph/document/cavite-state-university/computer-programming-1/bs-information-technology/58139214',
+    note: 'IT and computing subject-code examples.',
+  },
+  {
+    label: 'BSCE checklist on Scribd',
+    url: 'https://www.scribd.com/document/474149259/Checklist-BSCE-xlsx',
+    note: 'Common and engineering subject-code examples.',
+  },
+];
 
 export const students = [
   {
@@ -120,98 +251,5 @@ export const students = [
     standing: 'Graduating',
     bio: 'On internship with the campus IT office; completing final 12 units.',
     interests: ['Networks', 'Cybersecurity', 'Photography'],
-  },
-];
-
-export const courses = [
-  {
-    code: 'CS 101',
-    title: 'Foundations of Programming',
-    department: 'Computer Science',
-    level: 'Beginner',
-    credits: 3,
-    duration: '16 weeks',
-    instructor: 'Prof. Ana Rivera',
-    schedule: 'MWF 08:00–09:00',
-    room: 'Rm 204, Main',
-    seats: '38 / 40',
-    prerequisites: 'None',
-    description: 'Variables, control flow, functions, and basic data handling in Python. Weekly lab required.',
-    topics: ['Python syntax', 'Problem decomposition', 'Debugging', 'Intro to version control'],
-  },
-  {
-    code: 'CS 210',
-    title: 'Data Structures & Algorithms',
-    department: 'Computer Science',
-    level: 'Intermediate',
-    credits: 3,
-    duration: '16 weeks',
-    instructor: 'Prof. Rafael Lim',
-    schedule: 'TTh 10:30–12:00',
-    room: 'Rm 311, Main',
-    seats: '40 / 40',
-    prerequisites: 'CS 101',
-    description: 'Lists, trees, hash tables, graphs, and the complexity analysis needed to choose between them.',
-    topics: ['Arrays and linked lists', 'Trees and graphs', 'Sorting and searching', 'Big-O analysis'],
-  },
-  {
-    code: 'CS 225',
-    title: 'Front-end Web Development',
-    department: 'Computer Science',
-    level: 'Intermediate',
-    credits: 3,
-    duration: '16 weeks',
-    instructor: 'Prof. Camille Tan',
-    schedule: 'MW 13:00–14:30',
-    room: 'Lab 2, Annex A',
-    seats: '27 / 30',
-    prerequisites: 'CS 101',
-    description: 'Semantic HTML, CSS layout, and component-based JavaScript. Final project is a routed React application.',
-    topics: ['Semantic HTML', 'CSS layout', 'React components', 'Client-side routing', 'Accessibility'],
-  },
-  {
-    code: 'IT 230',
-    title: 'Database Design',
-    department: 'Information Technology',
-    level: 'Intermediate',
-    credits: 3,
-    duration: '16 weeks',
-    instructor: 'Prof. Miguel Flores',
-    schedule: 'TTh 14:30–16:00',
-    room: 'Lab 1, Annex A',
-    seats: '30 / 30',
-    prerequisites: 'CS 101',
-    description: 'Relational modelling, normalisation, and SQL. Term project: a working schema for a small office.',
-    topics: ['ER modelling', 'Normal forms', 'SQL queries', 'Indexing basics'],
-  },
-  {
-    code: 'MATH 214',
-    title: 'Discrete Mathematics',
-    department: 'Mathematics',
-    level: 'Intermediate',
-    credits: 3,
-    duration: '16 weeks',
-    instructor: 'Prof. Elise Garcia',
-    schedule: 'MWF 09:00–10:00',
-    room: 'Rm 118, Main',
-    seats: '44 / 45',
-    prerequisites: 'None',
-    description: 'Logic, sets, proof techniques, counting, and graph theory, taught with programming examples.',
-    topics: ['Propositional logic', 'Proof by induction', 'Combinatorics', 'Graph theory'],
-  },
-  {
-    code: 'GE 105',
-    title: 'Communication for Tech Professionals',
-    department: 'General Education',
-    level: 'All levels',
-    credits: 3,
-    duration: '16 weeks',
-    instructor: 'Prof. Sofia Mendoza',
-    schedule: 'F 13:00–16:00',
-    room: 'Rm 102, Main',
-    seats: '31 / 35',
-    prerequisites: 'None',
-    description: 'Technical writing, documentation, and presenting to non-specialists. Graded on a portfolio.',
-    topics: ['Technical writing', 'Documentation', 'Presentations', 'Peer review'],
   },
 ];

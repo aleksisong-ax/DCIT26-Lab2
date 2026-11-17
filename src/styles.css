@@ -305,6 +305,55 @@ code { padding: 1px 4px; background: var(--paper-deep); font-family: var(--mono)
   .record-facts div { grid-template-columns: 1fr; gap: 2px; }
 }
 
+.catalog-kind { flex: 0 0 auto; color: var(--ink-mute); font-family: var(--mono); font-size: 9px; letter-spacing: .06em; text-align: right; text-transform: uppercase; }
+
+/* Degree-program and source indexes */
+.program-index { margin-top: 5px; border-top: 1px solid var(--rule-strong); }
+.program-index-heading { display: grid; grid-template-columns: 32px 1fr; gap: 15px; padding: 18px 0 16px; border-bottom: 1px solid var(--rule); }
+.program-index-heading .section-number { padding-top: 5px; }
+.program-index-heading h2 { color: var(--forest-dark); font-size: 30px; }
+.program-index-heading p { margin-top: 5px; color: var(--ink-mute); font-size: 12px; }
+.program-group { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; padding: 22px 0 25px; border-bottom: 1px solid var(--rule); }
+.program-group-number { color: var(--gold); font-family: var(--mono); font-size: 12px; }
+.program-group-content h3 { color: var(--forest-dark); font-size: 23px; }
+.degree-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 9px 0 0; padding: 0; list-style: none; }
+.degree-list li { display: grid; gap: 3px; align-content: start; padding: 9px 0; border-bottom: 1px solid var(--rule); color: var(--ink-soft); font-size: 13px; }
+.degree-list li small { color: var(--ink-mute); font-size: 10px; line-height: 1.5; }
+.prefix-table { margin: 0; border-top: 1px solid var(--rule-strong); }
+.prefix-table div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.prefix-table dt { color: var(--ink-soft); font-size: 11px; }
+.prefix-table dd { margin: 0; color: var(--forest); font-family: var(--mono); font-size: 10px; text-align: right; }
+.sources-section, .source-list-section { margin-top: 48px; padding-top: 22px; border-top: 3px double var(--rule-strong); }
+.sources-section h2, .source-list-section h2 { margin-bottom: 9px; color: var(--forest-dark); font-size: 28px; }
+.source-list-intro { max-width: 72ch; margin-bottom: 17px; color: var(--ink-soft); font-size: 12px; line-height: 1.65; }
+.source-list { margin: 0; padding: 0; border-top: 1px solid var(--rule); list-style: none; }
+.source-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+.source-list li > span { display: grid; gap: 3px; }
+.source-list strong { color: var(--ink); font-size: 12px; font-weight: 600; }
+.source-list small { color: var(--ink-mute); font-size: 10px; }
+.source-list a { display: inline-flex; align-items: center; gap: 6px; color: var(--forest); font-size: 11px; white-space: nowrap; }
+.source-list a:hover { color: var(--gold); }
+.source-disclaimer { margin-top: 17px; color: var(--ink-mute); font-size: 11px; }
+
+@media (max-width: 720px) {
+  .front-panel-code { font-size: 61px; }
+  .front-term-panel { min-height: 315px; padding: 20px 21px 17px; }
+  .program-index-heading h2 { font-size: 26px; }
+  .degree-list { grid-template-columns: 1fr; }
+  .source-list li { grid-template-columns: 1fr; gap: 7px; }
+  .source-list-section, .sources-section { margin-top: 38px; }
+}
+
+@media (max-width: 380px) {
+  .front-panel-session { gap: 10px; }
+  .front-panel-code { font-size: 48px; }
+  .front-panel-year strong { font-size: 16px; }
+  .front-term-panel { padding-inline: 16px; }
+  .program-group { grid-template-columns: 27px minmax(0, 1fr); gap: 10px; }
+  .prefix-table div { grid-template-columns: 1fr; gap: 3px; }
+  .prefix-table dd { text-align: left; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }

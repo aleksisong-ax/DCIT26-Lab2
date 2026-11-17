@@ -21,7 +21,7 @@ export default function Navbar() {
       <div className="utility-band">
         <div className="container utility-inner">
           <span>ACADEMIC SERVICES</span>
-          <span>DEMONSTRATION PORTAL · FICTIONAL SAMPLE RECORDS</span>
+          <span>DEMO PORTAL · STUDENT PROFILES ARE FICTIONAL</span>
         </div>
       </div>
       <div className="container nav-shell">
