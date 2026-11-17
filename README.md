@@ -1,6 +1,6 @@
 # Student Information Portal (SIS)
 
-A centralized, web-based **Student Information Portal** where students can view and manage their academic records online. Built with React, reusable JSX components, and React Router. All student profiles, grades, and schedules are fictional demo data.
+A centralized, web-based **Student Information Portal** where a student can view and manage their academic records online. Built with React, reusable JSX components, and React Router. This demo includes one fictional student profile and that student’s grades and schedule only.
 
 **Signed-in demo student:** Mira Santos · 2023-10481 · BS Computer Science · BSCS 3-2
 
@@ -10,8 +10,13 @@ A centralized, web-based **Student Information Portal** where students can view 
 - **Class Schedules** — weekly timetable and subject table with days, time, room assignments, and instructor details.
 - **Enrollment & Registration** — online subject selection with a live 24-unit counter, 5-step registration status, and add/drop requests with an adviser-approval log.
 - **Account & Profile Management** — editable personal information, password change with strength meter, student ID photo upload, and a draw-your-own e-signature pad.
-- Student directory with live search and year filtering; CEIT subject-code catalog and degree-program reference with source links.
+- **My Profile (`/students`)** — shows only the single demo student’s own record and profile controls; no student directory or classmates’ records are included.
+- CEIT subject-code catalog and degree-program reference with source links.
 - Responsive layout, accessible labels, mobile navigation, and a not-found route. No image assets are used (icons are inline SVG, avatars are initials).
+
+## Privacy and demo limitations
+
+This is a **front-end-only demonstration**, not a secure student system. It has no real sign-in, backend, or server-side authorization. The source and browser can be inspected, so never add real student information. A production portal must authenticate each student and authorize access to records on the server.
 
 ## Run locally
 
@@ -32,7 +37,7 @@ npm run preview
 | URL | Page |
 | --- | --- |
 | `/` | Dashboard — SIS home for the signed-in student (grades, schedule, enrollment status, announcements) |
-| `/students` | Student directory + My Profile & Account management |
+| `/students` | My Profile & Account for the one fictional student (not a directory) |
 | `/courses` | Class Schedule · Enrollment & Add/Drop · Subject-Code Catalog |
 | `/about` | About the SIS, rubric compliance, CEIT degree programs & sources |
 | `/portal-html.html` | Static HTML-only version (no React, no CSS, no JavaScript) |
@@ -55,7 +60,7 @@ src/
 │   ├── Home.jsx
 │   ├── NotFound.jsx
 │   └── Students.jsx
-├── data.js                # fictional students, grades, schedule catalog, CEIT reference
+├── data.js                # one fictional student, their grades, schedule catalog, CEIT reference
 ├── App.jsx
 └── main.jsx
 public/

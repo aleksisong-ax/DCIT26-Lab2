@@ -5,7 +5,7 @@ import { term } from '../data.js';
 
 const links = [
   { label: 'Home', to: '/', end: true },
-  { label: 'Students', to: '/students' },
+  { label: 'My Profile', to: '/students' },
   { label: 'Courses', to: '/courses' },
   { label: 'About', to: '/about' },
 ];
@@ -21,7 +21,7 @@ export default function Navbar() {
       <div className="utility-band">
         <div className="container utility-inner">
           <span>ACADEMIC SERVICES</span>
-          <span>DEMO PORTAL · STUDENT PROFILES ARE FICTIONAL</span>
+          <span>SINGLE-STUDENT DEMO · FICTIONAL RECORDS</span>
         </div>
       </div>
       <div className="container nav-shell">

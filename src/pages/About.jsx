@@ -8,7 +8,7 @@ const FEATURES = [
   { title: 'Grades & Academic Records', body: 'View midterm and final grades, semester GWA, transcript summaries, and evaluation results — on the Dashboard’s grades section.' },
   { title: 'Class Schedules', body: 'Check enrolled subjects, days and time, room assignments, and instructor details in a weekly timetable on the Courses page.' },
   { title: 'Enrollment & Registration', body: 'Handle online subject selection with a live 24-unit counter, registration steps, and add/drop requests with an adviser-approval log.' },
-  { title: 'Account & Profile Management', body: 'Update personal information, change your password, upload a student ID photo, and save an e-signature on the Students page.' },
+  { title: 'My Account & Profile', body: 'Review and edit the signed-in demo student’s personal information, ID photo, e-signature, and password check on the My Profile page. No classmates’ profiles are included.' },
 ];
 
 export default function About() {
@@ -105,7 +105,7 @@ git push -u origin no-style`}</pre>
             </li>
           ))}
         </ul>
-        <p className="source-disclaimer">Student profiles, grades, and schedules are fictional demo data. Subject-code entries are a partial reference and do not imply a subject is offered in a particular term.</p>
+        <p className="source-disclaimer">This build contains one fictional student profile and that student’s demo grades, schedule, and enrollment only; it has no directory or classmates’ records. It is front-end-only and does not provide authentication or enforce privacy. Never enter real student data. Subject-code entries are a partial reference and do not imply a subject is offered in a particular term.</p>
       </section>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from './Icon.jsx';
 
-// A student record. Rendered as a ledger row that opens into the full record.
+// Reusable student record card; the current build passes only the signed-in demo student.
 export default function StudentCard({ student }) {
   const [expanded, setExpanded] = useState(false);
   const panelId = `record-${student.id}`;
@@ -11,6 +11,7 @@ export default function StudentCard({ student }) {
       <button
         type="button"
         className="record-row"
+        aria-label={`${expanded ? 'Hide' : 'Show'} details for your student record`}
         aria-expanded={expanded}
         aria-controls={panelId}
         onClick={() => setExpanded((open) => !open)}
@@ -25,17 +26,17 @@ export default function StudentCard({ student }) {
 
       <div id={panelId} className="record-panel" hidden={!expanded}>
         <dl className="record-facts">
-          <div><dt>Email</dt><dd><a href={`mailto:${student.email}`}>{student.email}</a></dd></div>
+          <div><dt>School email</dt><dd><a href={`mailto:${student.email}`}>{student.email}</a></dd></div>
           <div><dt>Campus</dt><dd>{student.campus}</dd></div>
-          <div><dt>Adviser</dt><dd>{student.adviser}</dd></div>
+          <div><dt>Academic adviser</dt><dd>{student.adviser}</dd></div>
+          <div><dt>Section</dt><dd>{student.section}</dd></div>
           <div><dt>Units this term</dt><dd>{student.units}</dd></div>
         </dl>
-        <div className="record-notes">
-          <p>{student.bio}</p>
-          <p className="record-interests">
-            <span>Interests</span> {student.interests.join(' · ')}
-          </p>
-        </div>
+        <dl className="record-facts">
+          <div><dt>Curriculum progress</dt><dd>{student.completedUnits} of {student.curriculumUnits} units</dd></div>
+          <div><dt>Enrolled since</dt><dd>{student.enrolledSince}</dd></div>
+          <div><dt>Record scope</dt><dd>Your own demo profile only</dd></div>
+        </dl>
       </div>
     </article>
   );
