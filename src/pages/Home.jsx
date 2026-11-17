@@ -3,131 +3,91 @@ import Icon from '../components/Icon.jsx';
 import StudentCard from '../components/StudentCard.jsx';
 import CourseCard from '../components/CourseCard.jsx';
 import SectionHeading from '../components/SectionHeading.jsx';
-import { courses, students } from '../data.js';
+import { courses, students, term } from '../data.js';
 
-const programCount = new Set(students.map((student) => student.program)).size;
-const yearCount = new Set(students.map((student) => student.year)).size;
+const programs = [...new Set(students.map((s) => s.program))];
+const departments = [...new Set(courses.map((c) => c.department))];
+const totalUnits = courses.reduce((sum, c) => sum + c.credits, 0);
+const fullSections = courses.filter((c) => {
+  const [taken, cap] = c.seats.split(' / ').map(Number);
+  return taken >= cap;
+}).length;
+
+const dates = [
+  ['Enrollment opens', term.enrollmentOpens],
+  ['Classes begin', term.classesBegin],
+  ['Add/drop ends', term.addDropEnds],
+];
 
 export default function Home() {
   return (
     <>
-      <section className="hero-section">
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <span className="eyebrow-pill"><Icon name="sparkles" size={15} /> A BRIGHTER WAY TO FIND YOUR WAY</span>
-            <h1>Your campus,<br /><span>all in one place.</span></h1>
-            <p className="hero-description">
-              Meet the people, discover the courses, and find your next spark. Welcome to a more connected campus.
-            </p>
-            <div className="hero-actions">
-              <Link className="button button-primary" to="/students">Explore the community <Icon name="arrowRight" size={17} /></Link>
-              <Link className="button button-quiet" to="/courses">Browse courses <Icon name="arrowUpRight" size={16} /></Link>
-            </div>
-            <div className="hero-social-proof">
-              <div className="mini-avatar-stack" aria-hidden="true">
-                {students.slice(0, 4).map((student) => (
-                  <span className={`mini-avatar mini-${student.accent}`} key={student.id}>{student.initials}</span>
-                ))}
-              </div>
-              <p><strong>A campus full of possibility.</strong><br />Start by finding your people.</p>
-            </div>
-          </div>
-
-          <div className="hero-art" aria-label="A sample student portal dashboard card">
-            <div className="hero-art-orbit orbit-one" />
-            <div className="hero-art-orbit orbit-two" />
-            <div className="hero-spark spark-one"><Icon name="sparkles" size={21} /></div>
-            <div className="hero-spark spark-two"><Icon name="sparkles" size={15} /></div>
-            <div className="hero-dashboard-card">
-              <div className="dashboard-topline">
-                <span className="dashboard-dot" />
-                <span>YOUR CAMPUS SNAPSHOT</span>
-                <Icon name="arrowUpRight" size={17} />
-              </div>
-              <p className="dashboard-kicker">A good place to begin</p>
-              <h2>Find your<br /><span>next thing.</span></h2>
-              <div className="dashboard-rule" />
-              <div className="dashboard-links">
-                <span className="dashboard-link-icon lavender-icon"><Icon name="users" size={17} /></span>
-                <span><strong>People who get it</strong><small>Make campus feel smaller</small></span>
-                <Icon name="arrowRight" size={16} className="dashboard-arrow" />
-              </div>
-              <div className="dashboard-links">
-                <span className="dashboard-link-icon peach-icon"><Icon name="book" size={17} /></span>
-                <span><strong>Ideas to explore</strong><small>Find a course to love</small></span>
-                <Icon name="arrowRight" size={16} className="dashboard-arrow" />
-              </div>
-            </div>
-            <div className="floating-note note-courses">
-              <span className="note-icon"><Icon name="layers" size={17} /></span>
-              <span><strong>{String(courses.length).padStart(2, '0')} courses</strong><small>to explore</small></span>
-            </div>
-            <div className="floating-note note-community">
-              <span className="community-check"><Icon name="check" size={14} /></span>
-              <span><strong>Find your community</strong><small>One hello at a time</small></span>
-            </div>
+      <section className="container front">
+        <div className="front-lead">
+          <p className="kicker">{term.label}</p>
+          <h1>Who is enrolled, what is offered, and where to find it.</h1>
+          <p className="front-standfirst">
+            A single index of this term’s student records and course sections. Open any row for the full record; search and filter on the Students and Courses pages.
+          </p>
+          <div className="front-actions">
+            <Link className="button" to="/students">Open student directory <Icon name="arrowRight" size={14} /></Link>
+            <Link className="link-plain" to="/courses">Course catalog <Icon name="arrowUpRight" size={13} /></Link>
           </div>
         </div>
-        <div className="hero-bottom-shape" />
+
+        <aside className="front-index" aria-label="This term at a glance">
+          <h2 className="index-title">At a glance</h2>
+          <dl className="index-list">
+            <div><dt>Students on record</dt><dd>{students.length}</dd></div>
+            <div><dt>Programs</dt><dd>{programs.length}</dd></div>
+            <div><dt>Course sections</dt><dd>{courses.length}</dd></div>
+            <div><dt>Departments</dt><dd>{departments.length}</dd></div>
+            <div><dt>Units offered</dt><dd>{totalUnits}</dd></div>
+            <div><dt>Sections full</dt><dd className={fullSections ? 'is-flag' : ''}>{fullSections}</dd></div>
+          </dl>
+          <h2 className="index-title">Key dates</h2>
+          <dl className="index-list index-dates">
+            {dates.map(([label, date]) => (
+              <div key={label}><dt>{label}</dt><dd><time dateTime={date}>{date}</time></dd></div>
+            ))}
+          </dl>
+        </aside>
       </section>
 
-      <section className="container stats-row" aria-label="Portal overview">
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-lilac"><Icon name="users" size={19} /></span>
-          <span className="stat-copy"><strong>{String(students.length).padStart(2, '0')}</strong><small>student stories</small></span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-peach"><Icon name="book" size={19} /></span>
-          <span className="stat-copy"><strong>{String(courses.length).padStart(2, '0')}</strong><small>courses to explore</small></span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-mint"><Icon name="graduation" size={19} /></span>
-          <span className="stat-copy"><strong>{String(programCount).padStart(2, '0')}</strong><small>degree programs</small></span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-icon stat-icon-sky"><Icon name="compass" size={19} /></span>
-          <span className="stat-copy"><strong>{String(yearCount).padStart(2, '0')}</strong><small>years represented</small></span>
-        </div>
-      </section>
-
-      <section className="section-block container home-directory-section">
+      <section className="container section-block">
         <SectionHeading
-          eyebrow="THE PEOPLE MAKE THE PLACE"
-          title="A community worth knowing."
-          description="A few friendly faces to get you started. Every profile is a doorway to a new conversation."
-          action={<Link className="section-link" to="/students">Meet all students <Icon name="arrowRight" size={16} /></Link>}
+          number="01"
+          title="Recently updated records"
+          description={`Three of ${students.length} students. Sorted by ID.`}
+          action={<Link className="link-plain" to="/students">All students <Icon name="arrowRight" size={13} /></Link>}
         />
-        <div className="student-grid home-student-grid">
+        <div className="ledger">
+          <div className="ledger-head" aria-hidden="true">
+            <span>ID</span><span>Name</span><span>Program</span><span>Year</span><span>Standing</span><span />
+          </div>
           {students.slice(0, 3).map((student) => <StudentCard key={student.id} student={student} />)}
         </div>
       </section>
 
-      <section className="section-block course-feature-section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="LEARN SOMETHING NEW"
-            title="Curiosity looks good on you."
-            description="Explore a small sample of the subjects and skills waiting to be discovered."
-            action={<Link className="section-link" to="/courses">See the course catalog <Icon name="arrowRight" size={16} /></Link>}
-          />
-          <div className="course-grid home-course-grid">
-            {courses.slice(0, 3).map((course) => <CourseCard key={course.code} course={course} />)}
-          </div>
+      <section className="container section-block">
+        <SectionHeading
+          number="02"
+          title="Sections closing soon"
+          description="Sections at or within three seats of capacity."
+          action={<Link className="link-plain" to="/courses">Full catalog <Icon name="arrowRight" size={13} /></Link>}
+        />
+        <div className="catalog">
+          {courses
+            .filter((c) => { const [t, cap] = c.seats.split(' / ').map(Number); return cap - t <= 3; })
+            .slice(0, 3)
+            .map((course) => <CourseCard key={course.code} course={course} />)}
         </div>
       </section>
 
-      <section className="container invitation-section">
-        <div className="invitation-card">
-          <div className="invitation-decoration invitation-decoration-one" />
-          <div className="invitation-decoration invitation-decoration-two" />
-          <div className="invitation-content">
-            <span className="eyebrow-pill eyebrow-pill-light"><Icon name="compass" size={15} /> YOUR NEXT CHAPTER STARTS HERE</span>
-            <h2>There’s more to campus<br />than a class schedule.</h2>
-            <p>Get to know the Northstar portal and find your own way to belong.</p>
-            <Link className="button button-light" to="/about">Get to know us <Icon name="arrowRight" size={17} /></Link>
-          </div>
-          <div className="invitation-symbol" aria-hidden="true"><Icon name="sparkles" size={74} strokeWidth={1.2} /></div>
-        </div>
+      <section className="container notice">
+        <p className="kicker">Notice</p>
+        <p>This portal is a front-end demonstration built for a web development course. It uses sample records only. For official transcripts, enrollment, and grades, contact your registrar directly.</p>
+        <Link className="link-plain" to="/about">About this project <Icon name="arrowRight" size={13} /></Link>
       </section>
     </>
   );

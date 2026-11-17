@@ -1,4 +1,4 @@
-# Northstar Student Information Portal
+# Student Information Portal
 
 A responsive student information portal built with React, reusable JSX components, and React Router. The sample records are fictional and are included for classroom demonstration only.
 
@@ -33,7 +33,7 @@ npm run preview
 | `/` | Home |
 | `/students` | Searchable student directory |
 | `/courses` | Filterable course catalog |
-| `/about` | About Northstar |
+| `/about` | About the project |
 | `/portal-html.html` | Static HTML-only demonstration |
 
 ## Project structure
