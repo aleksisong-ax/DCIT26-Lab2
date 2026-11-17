@@ -34,13 +34,23 @@ export default function Home() {
           <p className="portal-disclosure"><strong>DEMONSTRATION SITE</strong><span>Fictional records only. No sign-in, grades, payments, or official enrollment.</span></p>
         </div>
 
-        <figure className="front-photo">
-          <img src="/campus-courtyard.jpg" alt="Illustrative university courtyard with students walking between academic buildings" />
-          <figcaption>
-            <span className="photo-kicker">CAMPUS SCENE · ILLUSTRATIVE</span>
-            <span>A place to learn, meet, and get to class.</span>
-          </figcaption>
-        </figure>
+        <aside className="front-term-panel" aria-label="Sample academic term shortcuts">
+          <div className="front-panel-head">
+            <span>ACADEMIC SERVICES</span>
+            <span>DEMO / 01</span>
+          </div>
+          <div className="front-panel-session">
+            <span className="front-panel-code">2S</span>
+            <span className="front-panel-year"><small>ACADEMIC YEAR</small><strong>2026–27</strong></span>
+          </div>
+          <p className="front-panel-title">Student services index</p>
+          <p className="front-panel-copy">A sample directory and catalog for the second semester.</p>
+          <nav className="front-panel-links" aria-label="Portal sections">
+            <Link to="/students"><span>01</span><span>Student directory</span><Icon name="arrowRight" size={15} /></Link>
+            <Link to="/courses"><span>02</span><span>Course catalog</span><Icon name="arrowRight" size={15} /></Link>
+          </nav>
+          <p className="front-panel-note">FICTIONAL SAMPLE RECORDS · NO SIGN-IN</p>
+        </aside>
       </section>
 
       <section className="container term-summary" aria-label="Sample term information">

@@ -81,7 +81,7 @@ code { padding: 1px 4px; background: var(--paper-deep); font-family: var(--mono)
 .text-button:hover { color: var(--gold); }
 .is-flag { color: var(--rust); }
 
-/* Front page — campus photograph and term index */
+/* Front page — term panel and sample index */
 .front { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(350px, .98fr); align-items: center; gap: clamp(36px, 5.5vw, 72px); padding: 51px 0 48px; border-bottom: 1px solid var(--rule-strong); }
 .front-lead { padding: 5px 0; }
 .front-lead h1 { max-width: 13ch; margin-bottom: 20px; color: var(--forest-dark); font-size: clamp(43px, 5vw, 69px); line-height: 1.015; letter-spacing: -.035em; }
@@ -89,11 +89,22 @@ code { padding: 1px 4px; background: var(--paper-deep); font-family: var(--mono)
 .front-actions { display: flex; align-items: center; gap: 23px; flex-wrap: wrap; }
 .portal-disclosure { display: flex; flex-direction: column; gap: 4px; max-width: 440px; margin-top: 28px; padding-left: 12px; border-left: 2px solid var(--gold); color: var(--ink-mute); font-size: 11px; line-height: 1.5; }
 .portal-disclosure strong { color: var(--forest); font-family: var(--mono); font-size: 9px; letter-spacing: .08em; }
-.front-photo { position: relative; min-height: 380px; margin: 0; overflow: hidden; border: 1px solid var(--rule-strong); background: var(--forest-dark); }
-.front-photo::after { position: absolute; inset: 55% 0 0; content: ''; background: linear-gradient(transparent, rgba(14, 43, 27, .68)); pointer-events: none; }
-.front-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% center; }
-.front-photo figcaption { position: absolute; z-index: 1; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; gap: 4px; padding: 16px 18px 14px; border-top: 2px solid var(--gold); color: #fff; font-family: var(--serif); font-size: 17px; }
-.photo-kicker { color: #e6d2a2; font-family: var(--mono); font-size: 9px; letter-spacing: .1em; }
+.front-term-panel { display: flex; min-height: 370px; flex-direction: column; padding: 23px 27px 18px; border: 1px solid var(--forest-dark); border-top: 4px solid var(--gold); color: #f4f1e8; background: var(--forest-dark); }
+.front-panel-head { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 11px; border-bottom: 1px solid rgba(244, 241, 232, .24); color: #d8dfd4; font-family: var(--mono); font-size: 9px; letter-spacing: .08em; }
+.front-panel-head span:last-child { color: #e2c47a; }
+.front-panel-session { display: flex; align-items: end; gap: 15px; padding: 25px 0 17px; }
+.front-panel-code { color: #fff; font-family: var(--serif); font-size: 75px; letter-spacing: -.07em; line-height: .8; }
+.front-panel-year { display: grid; gap: 3px; padding-bottom: 4px; }
+.front-panel-year small { color: #e2c47a; font-family: var(--mono); font-size: 8px; letter-spacing: .1em; }
+.front-panel-year strong { color: #fff; font-family: var(--serif); font-size: 21px; font-weight: 400; }
+.front-panel-title { margin: 3px 0 4px; color: #fff; font-family: var(--serif); font-size: 23px; }
+.front-panel-copy { max-width: 39ch; color: #d4ddd3; font-size: 11px; line-height: 1.55; }
+.front-panel-links { margin-top: auto; padding-top: 16px; }
+.front-panel-links a { display: grid; grid-template-columns: 34px 1fr 20px; align-items: center; gap: 9px; padding: 10px 0; border-top: 1px solid rgba(244, 241, 232, .24); color: #fff; font-size: 12px; }
+.front-panel-links a:hover { color: #e2c47a; }
+.front-panel-links a span:first-child { color: #e2c47a; font-family: var(--mono); font-size: 9px; }
+.front-panel-links a svg { justify-self: end; }
+.front-panel-note { padding-top: 10px; color: #bfcdbf; font-family: var(--mono); font-size: 8px; letter-spacing: .08em; }
 .term-summary { display: grid; grid-template-columns: minmax(200px, .76fr) minmax(0, 2.24fr); gap: 36px; padding: 22px 0 26px; border-bottom: 1px solid var(--rule-strong); }
 .term-summary-intro { padding-right: 26px; border-right: 1px solid var(--rule); }
 .term-summary-intro .kicker { margin-bottom: 8px; }
@@ -260,7 +271,7 @@ code { padding: 1px 4px; background: var(--paper-deep); font-family: var(--mono)
   .front { grid-template-columns: 1fr; gap: 30px; padding: 38px 0 32px; }
   .front-lead h1 { max-width: 12ch; font-size: clamp(42px, 10vw, 58px); }
   .front-standfirst { margin-bottom: 20px; font-size: 14px; }
-  .front-photo { min-height: 270px; }
+  .front-term-panel { min-height: 315px; padding: 20px 21px 17px; }
   .term-summary { gap: 14px; padding: 19px 0 22px; }
   .term-summary-body { grid-template-columns: 1fr; gap: 17px; }
   .term-date-block { padding: 14px 0 0; border-top: 1px solid var(--rule); border-left: 0; }
