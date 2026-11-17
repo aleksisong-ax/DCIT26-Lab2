@@ -30,7 +30,7 @@ export default function Home() {
             <a className="button" href="#grades">View my grades <Icon name="arrowRight" size={14} /></a>
             <Link className="link-plain" to="/courses">Manage enrollment <Icon name="arrowUpRight" size={13} /></Link>
           </div>
-          <p className="portal-disclosure"><strong>DEMO ACCOUNT</strong><span>{portalStudent.studentNo} · {portalStudent.program} · {portalStudent.section}. Names, grades, and schedules are fictional sample data.</span></p>
+          <p className="portal-disclosure"><strong>SINGLE-STUDENT DEMO ACCOUNT</strong><span>{portalStudent.studentNo} · {portalStudent.program} · {portalStudent.section}. Only one fictional student record is included. This front-end demo has no real authentication or server-side access controls.</span></p>
         </div>
         <aside className="sis-adviser-card" aria-label="Student summary">
           <span>ACADEMIC ADVISER</span>
@@ -55,7 +55,7 @@ export default function Home() {
         <SectionHeading number="01" title="Grades & academic records" description="Midterm and final grades as posted by instructors. Switch semesters to view earlier evaluation results."
           action={<div className="sis-tabs" role="tablist">{gradeBook.map((book, index) => (<button key={book.sem} type="button" className={index === semIndex ? 'is-selected' : ''} onClick={() => setSemIndex(index)}>{book.sem}</button>))}</div>} />
         <GradeTable rows={rows} />
-        <p className="footnote">Semester GWA: <strong>{fmt(gwa)}</strong> · PH scale 1.00 (highest) to 5.00, passing at 3.00. Final rating is the rounded average of midterm and final grades. Demo grades only — see the Courses page for enrollment and the Students page for profile management.</p>
+        <p className="footnote">Semester GWA: <strong>{fmt(gwa)}</strong> · PH scale 1.00 (highest) to 5.00, passing at 3.00. Final rating is the rounded average of midterm and final grades. Demo grades only — see Courses for enrollment and My Profile for account management.</p>
       </section>
 
       <section className="container section-block">
