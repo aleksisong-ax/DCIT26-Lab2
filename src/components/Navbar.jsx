@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="container nav-shell">
         <Link className="masthead" to="/" aria-label="Student Information Portal home">
           <span className="masthead-title">Student Information Portal</span>
-          <span className="masthead-term"><span>ACADEMIC RECORDS</span><i aria-hidden="true">/</i>{term.label}</span>
+          <span className="masthead-term"><span>SIS · GRADES / SCHEDULE / ENROLLMENT</span><i aria-hidden="true">/</i>{term.label}</span>
         </Link>
 
         <button

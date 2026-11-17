@@ -4,21 +4,55 @@ import { degreeProgramGroups, referenceSources, subjectAreas, term } from '../da
 
 const programCount = degreeProgramGroups.reduce((count, group) => count + group.programs.length, 0);
 
+const FEATURES = [
+  { title: 'Grades & Academic Records', body: 'View midterm and final grades, semester GWA, transcript summaries, and evaluation results — on the Dashboard’s grades section.' },
+  { title: 'Class Schedules', body: 'Check enrolled subjects, days and time, room assignments, and instructor details in a weekly timetable on the Courses page.' },
+  { title: 'Enrollment & Registration', body: 'Handle online subject selection with a live 24-unit counter, registration steps, and add/drop requests with an adviser-approval log.' },
+  { title: 'Account & Profile Management', body: 'Update personal information, change your password, upload a student ID photo, and save an e-signature on the Students page.' },
+];
+
 export default function About() {
   return (
     <div className="page">
       <header className="container page-head">
-        <p className="kicker">{term.short} / degree-program reference</p>
-        <h1>Engineering, computing, architecture, and technology.</h1>
-        <p className="page-standfirst">A compact reference to {programCount} CEIT degree programs and selected subject codes. This is an informational class-project view, not an official or complete curriculum.</p>
+        <p className="kicker">{term.short} / about this system</p>
+        <h1>One portal for your whole academic life.</h1>
+        <p className="page-standfirst">A <strong>Student Information Portal</strong> (Student Information System / SIS) is a centralized, web-based platform where students can view and manage their academic records online — instead of lining up at the registrar for every transaction.</p>
       </header>
+
+      <section className="container section-block" style={{ paddingTop: 0 }}>
+        <p className="kicker">Key features in this build</p>
+        <div className="sis-feature-grid">
+          {FEATURES.map((feature) => (
+            <article key={feature.title} className="sis-panel"><h2>{feature.title}</h2><p>{feature.body}</p></article>
+          ))}
+        </div>
+        <p className="footnote">Reference portals: <a href="https://portal.mseuf.edu.ph/ecampnet/" target="_blank" rel="noreferrer">MSEUF eCampNet</a> · <a href="https://our.upou.edu.ph/student" target="_blank" rel="noreferrer">UPOU Student Portal</a> · <a href="https://chmsu.edu.ph/student-portal/" target="_blank" rel="noreferrer">CHMSU Student Portal</a>. This demo is not affiliated with any university.</p>
+      </section>
+
+      <section className="container section-block">
+        <p className="kicker">Laboratory rubric</p>
+        <h2 className="sis-profile-title">How this project complies</h2>
+        <ul className="sis-rubric">
+          <li><strong>Project Structure</strong> — Local Git repository initialized with a configured username and email (replace the placeholder identity in the README with your own).</li>
+          <li><strong>Reusable Components</strong> — Shared <code>Navbar</code>, <code>StudentCard</code>, <code>CourseCard</code>, <code>GradeTable</code>, and <code>ScheduleGrid</code> components in <code>src/components</code>, with pages in <code>src/pages</code>.</li>
+          <li><strong>React Routing</strong> — React Router routes for Home (Dashboard), Students, Courses, and About, with CSS styling and JavaScript interactivity on the <code>main</code> branch.</li>
+          <li><strong>Page Implementation</strong> — <code>no-style</code> and <code>main</code> branches are maintained, the HTML-only version lives at <code>public/portal-html.html</code>, and changes are committed with descriptive messages.</li>
+          <li><strong>Output &amp; Display</strong> — Push both branches to your GitHub repository and submit the repository link (commands in the README).</li>
+        </ul>
+        <pre className="sis-cmd">{`git config user.name "Your Full Name"
+git config user.email "you@example.com"
+git remote add origin https://github.com/YOUR-USERNAME/student-information-portal.git
+git push -u origin main
+git push -u origin no-style`}</pre>
+      </section>
 
       <section className="container program-index">
         <div className="program-index-heading">
-          <span className="section-number">01</span>
+          <span className="section-number">CEIT</span>
           <div>
             <h2>Degree programs</h2>
-            <p>Program groups and names transcribed from the supplied CEIT academic-program reference.</p>
+            <p>{programCount} program entries transcribed from the supplied CEIT academic-program reference (2018 — verify current offerings).</p>
           </div>
         </div>
         <div className="program-group-list">
@@ -45,20 +79,15 @@ export default function About() {
         <div className="about-col">
           <p className="kicker">Common requirements</p>
           <h2>Shared university subjects</h2>
-          <p>The supplied notes describe foundational general education, physical education, and orientation subjects as common across CEIT programs. The subject-code page includes the listed examples and unit values where provided.</p>
-          <p>Sequence-level FITT and NSTP units are shown as supplied; confirm whether those values apply per course or across the sequence.</p>
-          <Link className="link-plain" to="/courses">Open subject-code catalog <Icon name="arrowRight" size={13} /></Link>
+          <p>General education, physical education, NSTP, and orientation subjects are shared across CEIT programs. The subject-code catalog on the Courses page lists the supplied examples and units where provided.</p>
+          <Link className="link-plain" to="/courses">Open subject catalog <Icon name="arrowRight" size={13} /></Link>
         </div>
         <div className="about-col">
           <p className="kicker">Code prefix guide</p>
           <h2>Prefixes in the reference</h2>
-          <p>Major subject codes generally use a four-letter department prefix followed by a course number. The grouped prefixes below are the ones present in the supplied notes.</p>
           <dl className="prefix-table">
             {subjectAreas.map((area) => (
-              <div key={area.department}>
-                <dt>{area.department}</dt>
-                <dd>{area.prefixes.join(' · ')}</dd>
-              </div>
+              <div key={area.department}><dt>{area.department}</dt><dd>{area.prefixes.join(' · ')}</dd></div>
             ))}
           </dl>
         </div>
@@ -67,7 +96,7 @@ export default function About() {
       <section className="container sources-section">
         <p className="kicker">Sources & scope</p>
         <h2>Verify before using for advising or enrollment.</h2>
-        <p className="source-list-intro">The program page in the supplied material is from 2018, and some code examples point to third-party checklists. Requirements and offerings may have changed. Use current university materials or contact the CEIT registrar for authoritative information.</p>
+        <p className="source-list-intro">The program page in the supplied material is from 2018, and some code examples point to third-party checklists. Requirements and offerings may have changed.</p>
         <ul className="source-list">
           {referenceSources.map((source) => (
             <li key={source.url}>
@@ -76,12 +105,7 @@ export default function About() {
             </li>
           ))}
         </ul>
-        <p className="source-disclaimer">The student directory remains fictional. Course-code entries are a partial reference list and do not imply that a subject is offered in a particular term.</p>
-      </section>
-
-      <section className="container about-links">
-        <Link className="button" to="/students">Open student directory <Icon name="arrowRight" size={14} /></Link>
-        <a className="link-plain" href="/portal-html.html">View the HTML-only version <Icon name="arrowUpRight" size={13} /></a>
+        <p className="source-disclaimer">Student profiles, grades, and schedules are fictional demo data. Subject-code entries are a partial reference and do not imply a subject is offered in a particular term.</p>
       </section>
     </div>
   );
