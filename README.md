@@ -1,6 +1,6 @@
 # Student Information Portal (SIS)
 
-A centralized, web-based **Student Information Portal** where a student can view and manage their academic records online. Built with React, reusable JSX components, and React Router. This demo includes one fictional student profile and that student’s grades and schedule only.
+Welcome to my **Student Information Portal** demo. It brings a student's grades, class schedule, enrollment details, and profile together in one place. It's built with React and React Router and uses one fictional student account—no classmates’ records are included.
 
 **Signed-in demo student:** Mira Santos · 2023-10481 · BS Computer Science · BSCS 3-2
 
@@ -16,7 +16,7 @@ A centralized, web-based **Student Information Portal** where a student can view
 
 ## Privacy and demo limitations
 
-This is a **front-end-only demonstration**, not a secure student system. It has no real sign-in, backend, or server-side authorization. The source and browser can be inspected, so never add real student information. A production portal must authenticate each student and authorize access to records on the server.
+This is a **front-end classroom demo**, not a real student system. All sample details are fictional, and there is no real sign-in or server-side access control—please don't enter real student information. A production SIS would need secure authentication and server-side checks so each student can see only their own records.
 
 ## Run locally
 
